@@ -1,17 +1,26 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
 
 <meta charset="UTF-8">
+
 <meta name="viewport"
-      content="width=device-width,initial-scale=1.0">
+content="width=device-width,initial-scale=1.0">
 
 <title>Gupta Fashion - Admin Panel</title>
 
 <link rel="stylesheet" href="style.css">
 
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
 <style>
+
+body{
+    margin:0;
+    background:#f5f7fb;
+    font-family:Arial,sans-serif;
+    color:#111827;
+}
 
 .admin-page{
     max-width:1250px;
@@ -29,6 +38,15 @@
     justify-content:space-between;
     align-items:center;
     gap:15px;
+}
+
+.admin-header h1{
+    margin:0 0 5px;
+}
+
+.admin-header p{
+    margin:0;
+    color:#d1d5db;
 }
 
 .admin-header a{
@@ -72,7 +90,7 @@
 
 table{
     width:100%;
-    min-width:950px;
+    min-width:1000px;
     border-collapse:collapse;
 }
 
@@ -81,6 +99,7 @@ th,td{
     border-bottom:1px solid #e5e7eb;
     text-align:left;
     font-size:13px;
+    vertical-align:top;
 }
 
 select{
@@ -96,13 +115,46 @@ select{
 }
 
 .delete{
+    border:0;
     background:#fee2e2;
     color:#dc2626;
     padding:8px 10px;
     border-radius:8px;
+    cursor:pointer;
+}
+
+.delete:active{
+    transform:scale(.95);
+}
+
+.refresh{
+    border:0;
+    background:#111827;
+    color:white;
+    padding:10px 15px;
+    border-radius:9px;
+    cursor:pointer;
+    margin-bottom:15px;
+}
+
+.empty{
+    text-align:center;
+    padding:40px;
+    color:#6b7280;
+}
+
+.error{
+    color:#dc2626;
+    padding:20px;
+    text-align:center;
 }
 
 @media(max-width:700px){
+
+    .admin-page{
+        margin:10px auto;
+        padding:10px;
+    }
 
     .stats{
         grid-template-columns:1fr;
@@ -123,319 +175,646 @@ select{
 
 <div class="admin-page">
 
-    <div class="admin-header">
+<div class="admin-header">
 
-        <div>
-            <h1>📊 Gupta Fashion</h1>
-            <p>Admin Panel</p>
-        </div>
+<div>
 
-        <a href="index.html">
-            ← Customer Website
-        </a>
+<h1>📊 Gupta Fashion</h1>
 
-    </div>
+<p>Admin Panel</p>
 
+</div>
 
-    <div class="stats">
+<a href="index.html">
+← Customer Website
+</a>
 
-        <div class="stat-card">
-            <small>Total Products</small>
-            <h2 id="productCount">8</h2>
-        </div>
-
-        <div class="stat-card">
-            <small>Total Orders</small>
-            <h2 id="orderCount">0</h2>
-        </div>
-
-        <div class="stat-card">
-            <small>Total Sales</small>
-            <h2 id="sales">₹0</h2>
-        </div>
-
-    </div>
+</div>
 
 
-    <div class="orders-box">
+<div class="stats">
 
-        <h2>📦 Customer Orders</h2>
+<div class="stat-card">
 
-        <br>
+<small>
+Total Products
+</small>
 
-        <table>
+<h2 id="productCount">
+8
+</h2>
 
-            <thead>
+</div>
 
-                <tr>
 
-                    <th>Order ID</th>
-                    <th>Customer</th>
-                    <th>Products</th>
-                    <th>Total</th>
-                    <th>Payment</th>
-                    <th>Status</th>
-                    <th>WhatsApp</th>
-                    <th>Delete</th>
+<div class="stat-card">
 
-                </tr>
+<small>
+Total Orders
+</small>
 
-            </thead>
+<h2 id="orderCount">
+0
+</h2>
 
-            <tbody id="orders"></tbody>
+</div>
 
-        </table>
 
-    </div>
+<div class="stat-card">
+
+<small>
+Total Sales
+</small>
+
+<h2 id="sales">
+₹0
+</h2>
+
+</div>
+
+</div>
+
+
+<div class="orders-box">
+
+<h2>
+📦 Customer Orders
+</h2>
+
+<button
+class="refresh"
+onclick="showOrders()"
+>
+↻ Refresh Orders
+</button>
+
+
+<table>
+
+<thead>
+
+<tr>
+
+<th>
+Order ID
+</th>
+
+<th>
+Customer
+</th>
+
+<th>
+Products
+</th>
+
+<th>
+Total
+</th>
+
+<th>
+Payment
+</th>
+
+<th>
+Status
+</th>
+
+<th>
+WhatsApp
+</th>
+
+<th>
+Delete
+</th>
+
+</tr>
+
+</thead>
+
+
+<tbody id="orders">
+
+<tr>
+
+<td colspan="8">
+
+<div class="empty">
+Loading orders...
+</div>
+
+</td>
+
+</tr>
+
+</tbody>
+
+</table>
+
+</div>
 
 </div>
 
 
 <script>
 
+/* =====================================================
+SUPABASE
+===================================================== */
+
+const SUPABASE_URL =
+"https://fglsyjbprzitagtfwgpp.supabase.co";
+
+const SUPABASE_KEY =
+"sb_publishable_cdpN6qM5gHiHAzigyYgzfg_AU-Ce_3D";
+
+const supabaseClient =
+window.supabase.createClient(
+SUPABASE_URL,
+SUPABASE_KEY
+);
+
+
+/* =====================================================
+STATUSES
+===================================================== */
+
 const statuses = [
 
-    "New Order",
-    "Confirmed",
-    "Packed",
-    "Out for Delivery",
-    "Delivered"
+"New Order",
+
+"Confirmed",
+
+"Packed",
+
+"Out for Delivery",
+
+"Delivered"
 
 ];
 
 
+/* =====================================================
+MONEY
+===================================================== */
+
 function money(n){
 
-    return "₹" +
-        Number(n).toLocaleString("en-IN");
+return "₹" +
+Number(n || 0)
+.toLocaleString("en-IN");
 
 }
 
 
-function getOrders(){
+/* =====================================================
+LOAD ORDERS
+===================================================== */
 
-    return JSON.parse(
-        localStorage.getItem("guptaOrders")
-    ) || [];
+async function getOrders(){
+
+const {
+data,
+error
+} = await supabaseClient
+
+.from("orders")
+
+.select("*")
+
+.order(
+"created_at",
+{
+ascending:false
+}
+);
+
+
+if(error){
+
+console.error(error);
+
+return [];
+
+}
+
+return data || [];
 
 }
 
 
-function saveOrders(orders){
+/* =====================================================
+SHOW ORDERS
+===================================================== */
 
-    localStorage.setItem(
-        "guptaOrders",
-        JSON.stringify(orders)
-    );
+async function showOrders(){
+
+const table =
+document.getElementById("orders");
+
+table.innerHTML = `
+
+<tr>
+
+<td colspan="8">
+
+<div class="empty">
+Loading orders...
+</div>
+
+</td>
+
+</tr>
+
+`;
+
+
+const orders =
+await getOrders();
+
+
+document.getElementById(
+"orderCount"
+).textContent =
+orders.length;
+
+
+let sales=0;
+
+
+orders.forEach(
+order=>{
+
+sales +=
+Number(order.total || 0);
+
+}
+);
+
+
+document.getElementById(
+"sales"
+).textContent =
+money(sales);
+
+
+if(!orders.length){
+
+table.innerHTML = `
+
+<tr>
+
+<td colspan="8">
+
+<div class="empty">
+
+📦
+
+<br><br>
+
+No orders yet.
+
+</div>
+
+</td>
+
+</tr>
+
+`;
+
+return;
 
 }
 
 
-function showOrders(){
+table.innerHTML =
 
-    const orders = getOrders();
+orders.map(
+order=>{
 
-    document.getElementById("orderCount")
-        .textContent = orders.length;
+let items = [];
 
+try{
 
-    let sales = 0;
+items =
+Array.isArray(order.items)
+? order.items
+: [];
 
-    orders.forEach(o=>{
-        sales += Number(o.total || 0);
-    });
+}catch(e){
 
-
-    document.getElementById("sales")
-        .textContent = money(sales);
-
-
-    const table =
-        document.getElementById("orders");
-
-
-    if(!orders.length){
-
-        table.innerHTML = `
-
-        <tr>
-            <td colspan="8"
-                style="text-align:center;padding:40px">
-
-                No orders yet.
-
-            </td>
-        </tr>
-
-        `;
-
-        return;
-    }
-
-
-    table.innerHTML = orders.map((order,index)=>`
-
-        <tr>
-
-            <td>
-                <b>${order.id}</b>
-                <br>
-                <small>${order.date}</small>
-            </td>
-
-
-            <td>
-
-                <b>${order.customer.name}</b>
-
-                <br>
-
-                📞 ${order.customer.phone}
-
-                <br>
-
-                ${order.customer.address}
-
-                <br>
-
-                ${order.customer.city},
-                ${order.customer.state}
-                -
-                ${order.customer.pincode}
-
-            </td>
-
-
-            <td>
-
-                ${order.items.map(item =>
-
-                    `${item.name} × ${item.qty}`
-
-                ).join("<br>")}
-
-            </td>
-
-
-            <td>
-
-                <b>${money(order.total)}</b>
-
-            </td>
-
-
-            <td>
-
-                ${
-                    order.payment === "COD"
-                    ? "Cash on Delivery"
-                    : "UPI / Online"
-                }
-
-            </td>
-
-
-            <td>
-
-                <select
-                    onchange="changeStatus(${index},this.value)"
-                >
-
-                    ${
-                        statuses.map(status => `
-
-                            <option
-                                ${
-                                    order.status === status
-                                    ? "selected"
-                                    : ""
-                                }
-                            >
-                                ${status}
-                            </option>
-
-                        `).join("")
-                    }
-
-                </select>
-
-            </td>
-
-
-            <td>
-
-                <a
-                    class="wa"
-                    target="_blank"
-                    href="https://wa.me/91${order.customer.phone}?text=${encodeURIComponent(
-                        "GUPTA FASHION - Order " +
-                        order.id +
-                        " status: " +
-                        order.status
-                    )}"
-                >
-
-                    WhatsApp
-
-                </a>
-
-            </td>
-
-
-            <td>
-
-                <button
-                    class="delete"
-                    onclick="deleteOrder(${index})"
-                >
-
-                    Delete
-
-                </button>
-
-            </td>
-
-        </tr>
-
-    `).join("");
+items=[];
 
 }
 
 
-function changeStatus(index,status){
+return `
 
-    const orders = getOrders();
+<tr>
 
-    if(!orders[index]) return;
+<td>
 
-    orders[index].status = status;
+<b>
+${escapeHtml(order.order_id || "")}
+</b>
 
-    saveOrders(orders);
+<br>
 
-    showOrders();
+<small>
+${formatDate(order.created_at)}
+</small>
+
+</td>
+
+
+<td>
+
+<b>
+${escapeHtml(order.customer_name || "")}
+</b>
+
+<br>
+
+📞 ${escapeHtml(order.customer_phone || "")}
+
+<br>
+
+${escapeHtml(order.customer_address || "")}
+
+<br>
+
+${escapeHtml(order.customer_city || "")},
+${escapeHtml(order.customer_state || "")}
+-
+${escapeHtml(order.customer_pincode || "")}
+
+</td>
+
+
+<td>
+
+${
+items.length
+
+?
+
+items.map(
+item=>
+
+`${escapeHtml(item.name || "")}
+× ${Number(item.qty || 0)}`
+
+).join("<br>")
+
+:
+
+"No products"
+
+}
+
+</td>
+
+
+<td>
+
+<b>
+${money(order.total)}
+</b>
+
+</td>
+
+
+<td>
+
+<span>
+
+Cash on Delivery
+
+</span>
+
+</td>
+
+
+<td>
+
+<select
+onchange="changeStatus('${order.id}',this.value)"
+>
+
+${
+statuses.map(
+status=>`
+
+<option
+value="${status}"
+${
+order.status === status
+? "selected"
+: ""
+}
+>
+
+${status}
+
+</option>
+
+`
+).join("")
+}
+
+</select>
+
+</td>
+
+
+<td>
+
+<a
+
+class="wa"
+
+target="_blank"
+
+href="https://wa.me/91${encodeURIComponent(
+order.customer_phone || ""
+)}?text=${encodeURIComponent(
+
+"GUPTA FASHION - Order " +
+(order.order_id || "") +
+" status: " +
+(order.status || "")
+
+)}"
+
+>
+
+WhatsApp
+
+</a>
+
+</td>
+
+
+<td>
+
+<button
+
+class="delete"
+
+onclick="deleteOrder('${order.id}')"
+
+>
+
+Delete
+
+</button>
+
+</td>
+
+</tr>
+
+`;
+
+}
+
+).join("");
 
 }
 
 
-function deleteOrder(index){
+/* =====================================================
+CHANGE STATUS
+===================================================== */
 
-    if(!confirm("Delete this order?"))
-        return;
+async function changeStatus(
+id,
+status
+){
 
-    const orders = getOrders();
+const {
+error
+} = await supabaseClient
 
-    orders.splice(index,1);
+.from("orders")
 
-    saveOrders(orders);
+.update({
+status:status
+})
 
-    showOrders();
+.eq("id",id);
+
+
+if(error){
+
+console.error(error);
+
+alert(
+"Status update nahi hua."
+);
+
+return;
 
 }
 
 
 showOrders();
 
+}
+
+
+/* =====================================================
+DELETE
+===================================================== */
+
+async function deleteOrder(id){
+
+if(
+!confirm(
+"Delete this order?"
+)
+)
+return;
+
+
+const {
+error
+} =
+await supabaseClient
+
+.from("orders")
+
+.delete()
+
+.eq("id",id);
+
+
+if(error){
+
+console.error(error);
+
+alert(
+"Order delete nahi hua."
+);
+
+return;
+
+}
+
+
+showOrders();
+
+}
+
+
+/* =====================================================
+ESCAPE HTML
+===================================================== */
+
+function escapeHtml(value){
+
+return String(value ?? "")
+.replace(/&/g,"&amp;")
+.replace(/</g,"&lt;")
+.replace(/>/g,"&gt;")
+.replace(/"/g,"&quot;")
+.replace(/'/g,"&#039;");
+
+}
+
+
+/* =====================================================
+DATE
+===================================================== */
+
+function formatDate(value){
+
+if(!value)
+return "";
+
+const date =
+new Date(value);
+
+if(
+Number.isNaN(
+date.getTime()
+)
+)
+return "";
+
+return date.toLocaleString(
+"en-IN"
+);
+
+}
+
+
+/* =====================================================
+START
+===================================================== */
+
+showOrders();
+
 </script>
 
 </body>
+
 </html>
