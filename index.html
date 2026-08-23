@@ -1,1202 +1,1583 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<meta
-    name="viewport"
-    content="width=device-width, initial-scale=1.0"
->
-
-<title>Gupta Fashion - Admin Panel</title>
+<title>Gupta Fashion</title>
 
 <link rel="stylesheet" href="style.css">
 
-<!-- SUPABASE -->
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
-
-<style>
-
-/* ===============================
-   ADMIN PAGE
-================================ */
-
-.admin-page{
-    max-width:1250px;
-    margin:30px auto;
-    padding:20px;
-}
-
-
-/* ===============================
-   HEADER
-================================ */
-
-.admin-header{
-    background:#111827;
-    color:white;
-
-    padding:25px;
-
-    border-radius:20px;
-
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-
-    gap:15px;
-}
-
-
-.admin-header h1{
-    margin:0 0 5px;
-}
-
-
-.admin-header p{
-    margin:0;
-    opacity:.7;
-}
-
-
-.admin-header a{
-    background:#f59e0b;
-    color:#111827;
-
-    padding:12px 18px;
-
-    border-radius:10px;
-
-    text-decoration:none;
-
-    font-weight:bold;
-
-    transition:.2s;
-}
-
-
-.admin-header a:hover{
-    transform:translateY(-2px);
-}
-
-
-/* ===============================
-   STATS
-================================ */
-
-.stats{
-    display:grid;
-
-    grid-template-columns:
-        repeat(3,1fr);
-
-    gap:15px;
-
-    margin:20px 0;
-}
-
-
-.stat-card{
-    background:white;
-
-    border:1px solid #e5e7eb;
-
-    border-radius:16px;
-
-    padding:22px;
-
-    box-shadow:
-        0 5px 20px
-        rgba(0,0,0,.04);
-}
-
-
-.stat-card small{
-    color:#6b7280;
-}
-
-
-.stat-card h2{
-    margin-top:8px;
-}
-
-
-/* ===============================
-   ORDERS
-================================ */
-
-.orders-box{
-    background:white;
-
-    border-radius:18px;
-
-    padding:20px;
-
-    border:1px solid #e5e7eb;
-
-    overflow:auto;
-}
-
-
-.orders-box h2{
-    margin-top:0;
-}
-
-
-table{
-    width:100%;
-
-    min-width:1050px;
-
-    border-collapse:collapse;
-}
-
-
-th,
-td{
-    padding:13px;
-
-    border-bottom:
-        1px solid #e5e7eb;
-
-    text-align:left;
-
-    font-size:13px;
-
-    vertical-align:top;
-}
-
-
-th{
-    background:#f9fafb;
-}
-
-
-/* ===============================
-   STATUS
-================================ */
-
-.status-select{
-
-    padding:9px 12px;
-
-    border-radius:8px;
-
-    border:1px solid #d1d5db;
-
-    background:white;
-
-    cursor:pointer;
-
-    font-weight:600;
-
-}
-
-
-/* ===============================
-   WHATSAPP
-================================ */
-
-.wa{
-
-    color:#16a34a;
-
-    font-weight:bold;
-
-    text-decoration:none;
-
-}
-
-
-.wa:hover{
-    text-decoration:underline;
-}
-
-
-/* ===============================
-   DELETE
-================================ */
-
-.delete{
-
-    border:none;
-
-    background:#fee2e2;
-
-    color:#dc2626;
-
-    padding:8px 10px;
-
-    border-radius:8px;
-
-    cursor:pointer;
-
-    font-weight:600;
-
-}
-
-
-.delete:hover{
-    background:#fecaca;
-}
-
-
-/* ===============================
-   REFRESH
-================================ */
-
-.refresh-btn{
-
-    border:none;
-
-    background:#111827;
-
-    color:white;
-
-    padding:10px 15px;
-
-    border-radius:10px;
-
-    cursor:pointer;
-
-    margin-bottom:15px;
-
-    transition:.2s;
-
-}
-
-
-.refresh-btn:hover{
-    transform:translateY(-2px);
-}
-
-
-/* ===============================
-   EMPTY
-================================ */
-
-.empty-orders{
-
-    text-align:center;
-
-    padding:50px;
-
-    color:#6b7280;
-
-}
-
-
-/* ===============================
-   MOBILE
-================================ */
-
-@media(max-width:700px){
-
-    .stats{
-
-        grid-template-columns:1fr;
-
-    }
-
-
-    .admin-page{
-
-        padding:12px;
-
-    }
-
-
-    .admin-header{
-
-        flex-direction:column;
-
-        align-items:flex-start;
-
-    }
-
-}
-
-</style>
 
 </head>
 
-
 <body>
 
+<header>
 
-<div class="admin-page">
+<nav class="navbar">
 
+<div class="logo">
+GUPTA<span>FASHION</span>
+</div>
 
-    <!-- HEADER -->
+<div class="search">
 
-    <div class="admin-header">
+<input
+id="searchInput"
+placeholder="Search shirts, shoes, belts..."
+oninput="searchProducts()"
+>
 
-        <div>
+🔍
 
-            <h1>
-                📊 Gupta Fashion
-            </h1>
+</div>
 
-            <p>
-                Admin Panel
-            </p>
+<div class="nav-actions">
 
-        </div>
+<button
+class="icon-btn"
+onclick="scrollProducts()"
+>
+🛍️
+</button>
 
+<button
+class="icon-btn"
+onclick="openTrack()"
+>
+📦
+</button>
 
-        <a href="index.html">
-            ← Customer Website
-        </a>
+<button
+class="icon-btn"
+onclick="openCart()"
+>
+🛒
+<b id="cartCount">0</b>
+</button>
 
-    </div>
+</div>
 
+</nav>
 
+</header>
 
-    <!-- STATS -->
 
-    <div class="stats">
+<section class="hero">
 
+<div class="hero-content">
 
-        <div class="stat-card">
+<small>
+NEW MEN'S COLLECTION
+</small>
 
-            <small>
-                Total Products
-            </small>
+<h1>
+Style That<br>
+Speaks.
+</h1>
 
-            <h2 id="productCount">
-                8
-            </h2>
+<p>
+Premium shirts, stylish shoes and quality belts —
+all in one place.
+</p>
 
-        </div>
+<button
+class="primary"
+onclick="scrollProducts()"
+>
+Shop Now →
+</button>
 
+</div>
 
+</section>
 
-        <div class="stat-card">
 
-            <small>
-                Total Orders
-            </small>
+<section class="section">
 
-            <h2 id="orderCount">
-                0
-            </h2>
+<h2>
+Shop by Category
+</h2>
 
-        </div>
+<div class="categories">
 
+<div
+class="category"
+onclick="filterProducts('Shirts')"
+>
 
+<h2>👕 Shirts</h2>
 
-        <div class="stat-card">
+<p>
+Smart & Casual
+</p>
 
-            <small>
-                Total Sales
-            </small>
+</div>
 
-            <h2 id="sales">
-                ₹0
-            </h2>
 
-        </div>
+<div
+class="category"
+onclick="filterProducts('Shoes')"
+>
 
+<h2>👟 Shoes</h2>
 
-    </div>
+<p>
+Step in Style
+</p>
 
+</div>
 
 
-    <!-- ORDERS -->
+<div
+class="category"
+onclick="filterProducts('Belts')"
+>
 
-    <div class="orders-box">
+<h2>🧷 Belts</h2>
 
+<p>
+Complete Your Look
+</p>
 
-        <h2>
-            📦 Customer Orders
-        </h2>
+</div>
 
+</div>
 
-        <button
-            class="refresh-btn"
-            onclick="loadOrders()"
-        >
-            🔄 Refresh Orders
-        </button>
+</section>
 
 
-        <table>
+<section
+class="section"
+id="productsSection"
+>
 
+<div class="section-title">
 
-            <thead>
+<h2>
+Featured Products
+</h2>
 
-                <tr>
+<div class="filters">
 
-                    <th>
-                        Order ID
-                    </th>
+<button onclick="filterProducts('All')">
+All
+</button>
 
-                    <th>
-                        Customer
-                    </th>
+<button onclick="filterProducts('Shirts')">
+Shirts
+</button>
 
-                    <th>
-                        Products
-                    </th>
+<button onclick="filterProducts('Shoes')">
+Shoes
+</button>
 
-                    <th>
-                        Total
-                    </th>
+<button onclick="filterProducts('Belts')">
+Belts
+</button>
 
-                    <th>
-                        Payment
-                    </th>
+</div>
 
-                    <th>
-                        Status
-                    </th>
+</div>
 
-                    <th>
-                        WhatsApp
-                    </th>
 
-                    <th>
-                        Delete
-                    </th>
+<div
+class="products"
+id="products"
+></div>
 
-                </tr>
+</section>
 
-            </thead>
 
+<footer>
 
-            <tbody id="orders">
+<h2>
+GUPTA<span>FASHION</span>
+</h2>
 
-            </tbody>
+<p>
+Modern men's fashion at affordable prices.
+</p>
 
+<p>
+WhatsApp: 9236312403
+</p>
 
-        </table>
+<p>
+Payment: Cash on Delivery
+</p>
 
+</footer>
 
-    </div>
 
+<!-- CART -->
+
+<div
+class="overlay"
+id="overlay"
+onclick="closeCart()"
+></div>
+
+
+<div
+class="cart"
+id="cart"
+>
+
+<div class="cart-head">
+
+<h2>
+Your Cart
+</h2>
+
+<button onclick="closeCart()">
+✕
+</button>
+
+</div>
+
+
+<div id="cartItems"></div>
+
+
+<div class="cart-bottom">
+
+<h3>
+
+Total:
+
+<span id="cartTotal">
+₹0
+</span>
+
+</h3>
+
+
+<button
+class="primary full"
+onclick="checkout()"
+>
+
+Proceed to Checkout →
+
+</button>
+
+</div>
 
 </div>
 
 
 
+<!-- CHECKOUT -->
+
+<div
+class="modal"
+id="checkoutModal"
+>
+
+<div class="modal-box">
+
+<button
+class="close"
+onclick="closeCheckout()"
+>
+✕
+</button>
+
+
+<h2>
+Checkout
+</h2>
+
+
+<div
+id="checkoutSummary"
+></div>
+
+
+<form onsubmit="placeOrder(event)">
+
+
+<input
+id="name"
+required
+placeholder="Full Name"
+>
+
+
+<input
+id="phone"
+required
+maxlength="10"
+pattern="[0-9]{10}"
+placeholder="Mobile Number"
+>
+
+
+<textarea
+id="address"
+required
+placeholder="Complete Address"
+></textarea>
+
+
+<input
+id="city"
+required
+placeholder="City"
+>
+
+
+<input
+id="state"
+required
+placeholder="State"
+>
+
+
+<input
+id="pincode"
+required
+maxlength="6"
+pattern="[0-9]{6}"
+placeholder="Pincode"
+>
+
+
+<h3>
+Payment Method
+</h3>
+
+
+<label class="payment-option">
+
+<input
+type="radio"
+name="payment"
+value="COD"
+checked
+>
+
+<span>
+Cash on Delivery
+</span>
+
+</label>
+
+
+<button
+class="primary full"
+type="submit"
+>
+
+Place Order →
+
+</button>
+
+
+</form>
+
+</div>
+
+</div>
+
+
+
+<!-- TRACK ORDER -->
+
+<div
+class="modal"
+id="trackModal"
+>
+
+<div class="modal-box">
+
+<button
+class="close"
+onclick="closeTrack()"
+>
+✕
+</button>
+
+
+<h2>
+📦 Track Your Order
+</h2>
+
+
+<input
+id="trackId"
+placeholder="Order ID e.g. GF123456"
+>
+
+
+<input
+id="trackPhone"
+maxlength="10"
+placeholder="Mobile Number"
+>
+
+
+<button
+class="primary full"
+onclick="trackOrder()"
+>
+
+Track Order
+
+</button>
+
+
+<div
+id="trackingResult"
+></div>
+
+</div>
+
+</div>
+
+
+<div
+class="toast"
+id="toast"
+></div>
+
+
+
 <script>
 
-
 /* =====================================================
-   SUPABASE CONFIG
+SUPABASE
 ===================================================== */
 
-
 const SUPABASE_URL =
-    "https://fglsyjbprzitagtfwgpp.supabase.co";
+"https://fglsyjbprzitagtfwgpp.supabase.co";
 
 
 const SUPABASE_KEY =
-    "sb_publishable_cdpN6qM5gHiHAzigyYgzfg_AU-Ce_3D";
+"sb_publishable_cdpN6qM5gHiHAzigyYgzfg_AU-Ce_3D";
 
 
 const supabaseClient =
-    window.supabase.createClient(
-        SUPABASE_URL,
-        SUPABASE_KEY
-    );
-
+window.supabase.createClient(
+SUPABASE_URL,
+SUPABASE_KEY
+);
 
 
 /* =====================================================
-   STATUS LIST
+WHATSAPP
 ===================================================== */
 
+const WHATSAPP =
+"919236312403";
 
-const statuses = [
 
-    "New Order",
+/* =====================================================
+PRODUCTS
+===================================================== */
 
-    "Confirmed",
+const products = [
 
-    "Packed",
+{
+id:1,
+name:"Classic Black Casual Shirt",
+category:"Shirts",
+price:699,
+old:999,
+image:"https://images.unsplash.com/photo-1603252109303-2751441dd157?auto=format&fit=crop&w=700&q=80"
+},
 
-    "Out for Delivery",
+{
+id:2,
+name:"Premium White Formal Shirt",
+category:"Shirts",
+price:799,
+old:1199,
+image:"https://images.unsplash.com/photo-1598033129183-c4f50c736f10?auto=format&fit=crop&w=700&q=80"
+},
 
-    "Delivered"
+{
+id:3,
+name:"Blue Casual Shirt",
+category:"Shirts",
+price:749,
+old:999,
+image:"https://images.unsplash.com/photo-1621072156002-e2fccdc0b176?auto=format&fit=crop&w=700&q=80"
+},
+
+{
+id:4,
+name:"Urban Black Sneakers",
+category:"Shoes",
+price:1299,
+old:1799,
+image:"https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&w=700&q=80"
+},
+
+{
+id:5,
+name:"Classic White Sneakers",
+category:"Shoes",
+price:1199,
+old:1699,
+image:"https://images.unsplash.com/photo-1495555961986-6d4c1ecb7be3?auto=format&fit=crop&w=700&q=80"
+},
+
+{
+id:6,
+name:"Premium Brown Formal Shoes",
+category:"Shoes",
+price:1599,
+old:2199,
+image:"https://images.unsplash.com/photo-1614252369475-531eba835eb1?auto=format&fit=crop&w=700&q=80"
+},
+
+{
+id:7,
+name:"Classic Black Leather Belt",
+category:"Belts",
+price:399,
+old:599,
+image:"https://images.unsplash.com/photo-1624222247344-550fb60583dc?auto=format&fit=crop&w=700&q=80"
+},
+
+{
+id:8,
+name:"Premium Brown Leather Belt",
+category:"Belts",
+price:449,
+old:699,
+image:"https://images.unsplash.com/photo-1553062407-98eeb64c6a62?auto=format&fit=crop&w=700&q=80"
+}
 
 ];
 
 
-
 /* =====================================================
-   MONEY
+CART
 ===================================================== */
 
+let cart =
+JSON.parse(
+localStorage.getItem("guptaCart")
+) || [];
+
+
+/* =====================================================
+MONEY
+===================================================== */
 
 function money(n){
 
-    return "₹" +
-        Number(n || 0)
-            .toLocaleString("en-IN");
+return "₹" +
+Number(n || 0)
+.toLocaleString("en-IN");
 
 }
 
 
-
 /* =====================================================
-   LOAD ORDERS FROM SUPABASE
+DISPLAY PRODUCTS
 ===================================================== */
 
-
-async function loadOrders(){
-
-
-    const table =
-        document.getElementById(
-            "orders"
-        );
-
-
-    table.innerHTML = `
-
-        <tr>
-
-            <td
-                colspan="8"
-                style="
-                    text-align:center;
-                    padding:40px;
-                "
-            >
-
-                Loading orders...
-
-            </td>
-
-        </tr>
-
-    `;
-
-
-
-    const {
-        data,
-        error
-    } = await supabaseClient
-
-        .from("orders")
-
-        .select("*")
-
-        .order(
-            "id",
-            {
-                ascending:false
-            }
-        );
-
-
-
-    if(error){
-
-        console.error(
-            "SUPABASE ERROR:",
-            error
-        );
-
-
-        table.innerHTML = `
-
-            <tr>
-
-                <td
-                    colspan="8"
-                    style="
-                        text-align:center;
-                        padding:40px;
-                        color:red;
-                    "
-                >
-
-                    ❌ Orders load nahi ho rahe.
-
-                    <br><br>
-
-                    ${error.message}
-
-                </td>
-
-            </tr>
-
-        `;
-
-        return;
-
-    }
-
-
-
-    showOrders(data || []);
-
-}
-
-
-
-/* =====================================================
-   SHOW ORDERS
-===================================================== */
-
-
-function showOrders(orders){
-
-
-    document.getElementById(
-        "orderCount"
-    ).textContent =
-        orders.length;
-
-
-
-    let sales = 0;
-
-
-    orders.forEach(order => {
-
-        sales +=
-            Number(order.total || 0);
-
-    });
-
-
-
-    document.getElementById(
-        "sales"
-    ).textContent =
-        money(sales);
-
-
-
-    const table =
-        document.getElementById(
-            "orders"
-        );
-
-
-
-    if(!orders.length){
-
-        table.innerHTML = `
-
-            <tr>
-
-                <td
-                    colspan="8"
-                    class="empty-orders"
-                >
-
-                    📦
-
-                    <br><br>
-
-                    No orders yet.
-
-                </td>
-
-            </tr>
-
-        `;
-
-        return;
-
-    }
-
-
-
-    table.innerHTML =
-
-        orders.map(
-            order => {
-
-
-                let items = [];
-
-
-
-                /*
-
-                    Supabase JSON column
-
-                    may return array.
-
-                */
-
-
-                if(
-                    Array.isArray(
-                        order.items
-                    )
-                ){
-
-                    items =
-                        order.items;
-
-                }
-
-
-
-                const productsHTML =
-
-                    items.length
-
-                    ?
-
-                    items.map(
-                        item => `
-
-                            <div>
-
-                                ${item.name}
-
-                                × ${item.qty}
-
-                            </div>
-
-                        `
-                    ).join("")
-
-                    :
-
-                    "No product details";
-
-
-
-                const phone =
-                    String(
-                        order.customer_phone || ""
-                    ).replace(
-                        /\D/g,
-                        ""
-                    );
-
-
-
-                const waNumber =
-                    phone.length === 10
-
-                    ?
-
-                    "91" + phone
-
-                    :
-
-                    phone;
-
-
-
-                return `
-
-                <tr>
-
-
-                    <!-- ORDER ID -->
-
-                    <td>
-
-                        <b>
-                            ${order.order_id || "-"}
-                        </b>
-
-                        <br>
-
-                        <small>
-
-                            ${
-                                order.created_at
-                                ?
-
-                                new Date(
-                                    order.created_at
-                                ).toLocaleString(
-                                    "en-IN"
-                                )
-
-                                :
-
-                                ""
-
-                            }
-
-                        </small>
-
-                    </td>
-
-
-
-                    <!-- CUSTOMER -->
-
-                    <td>
-
-                        <b>
-
-                            ${
-                                order.customer_name
-                                || "-"
-                            }
-
-                        </b>
-
-                        <br>
-
-                        📞
-
-                        ${
-                            order.customer_phone
-                            || "-"
-                        }
-
-                        <br><br>
-
-                        ${
-                            order.customer_address
-                            || ""
-                        }
-
-                        <br>
-
-                        ${
-                            order.customer_city
-                            || ""
-                        },
-
-                        ${
-                            order.customer_state
-                            || ""
-                        }
-
-                        -
-
-                        ${
-                            order.customer_pincode
-                            || ""
-                        }
-
-                    </td>
-
-
-
-                    <!-- PRODUCTS -->
-
-                    <td>
-
-                        ${productsHTML}
-
-                    </td>
-
-
-
-                    <!-- TOTAL -->
-
-                    <td>
-
-                        <b>
-
-                            ${money(
-                                order.total
-                            )}
-
-                        </b>
-
-                    </td>
-
-
-
-                    <!-- PAYMENT -->
-
-                    <td>
-
-                        💵
-
-                        Cash on Delivery
-
-                    </td>
-
-
-
-                    <!-- STATUS -->
-
-                    <td>
-
-                        <select
-
-                            class="status-select"
-
-                            onchange="
-                                changeStatus(
-                                    '${order.order_id}',
-                                    this.value
-                                )
-                            "
-
-                        >
-
-                            ${
-                                statuses.map(
-                                    status => `
-
-                                    <option
-
-                                        value="${status}"
-
-                                        ${
-                                            order.status
-                                            ===
-                                            status
-
-                                            ?
-
-                                            "selected"
-
-                                            :
-
-                                            ""
-                                        }
-
-                                    >
-
-                                        ${status}
-
-                                    </option>
-
-                                `
-                                ).join("")
-                            }
-
-                        </select>
-
-                    </td>
-
-
-
-                    <!-- WHATSAPP -->
-
-                    <td>
-
-                        ${
-                            waNumber
-
-                            ?
-
-                            `
-
-                            <a
-
-                                class="wa"
-
-                                target="_blank"
-
-                                href="https://wa.me/${waNumber}?text=${encodeURIComponent(
-
-                                    "GUPTA FASHION\n\n" +
-
-                                    "Order ID: " +
-                                    order.order_id +
-
-                                    "\n\n" +
-
-                                    "Your order status is: " +
-                                    order.status
-
-                                )}"
-
-                            >
-
-                                WhatsApp
-
-                            </a>
-
-                            `
-
-                            :
-
-                            "-"
-                        }
-
-                    </td>
-
-
-
-                    <!-- DELETE -->
-
-                    <td>
-
-                        <button
-
-                            class="delete"
-
-                            onclick="
-                                deleteOrder(
-                                    '${order.order_id}'
-                                )
-                            "
-
-                        >
-
-                            Delete
-
-                        </button>
-
-                    </td>
-
-
-                </tr>
-
-                `;
-
-            }
-
-        ).join("");
-
-}
-
-
-
-/* =====================================================
-   CHANGE STATUS
-===================================================== */
-
-
-async function changeStatus(
-    orderId,
-    newStatus
+function displayProducts(
+list=products
 ){
 
-
-    const {
-        error
-    } = await supabaseClient
-
-        .from("orders")
-
-        .update({
-
-            status:
-                newStatus
-
-        })
-
-        .eq(
-            "order_id",
-            orderId
-        );
+const box =
+document.getElementById(
+"products"
+);
 
 
+box.innerHTML =
+list.map(
+p=>`
 
-    if(error){
+<div class="product">
 
-        console.error(
-            error
-        );
+<div class="product-img">
 
+<img
+src="${p.image}"
+alt="${p.name}"
+>
 
-        alert(
-            "Status update nahi hua.\n\n" +
-            error.message
-        );
-
-
-        return;
-
-    }
+</div>
 
 
+<div class="product-info">
 
-    alert(
-        "Order status updated:\n" +
-        newStatus
-    );
+<small>
+${p.category}
+</small>
+
+<h3>
+${p.name}
+</h3>
+
+<div class="price">
+
+${money(p.price)}
+
+<del>
+${money(p.old)}
+</del>
+
+</div>
 
 
-    loadOrders();
+<button
+class="add"
+onclick="addCart(${p.id})"
+>
+
+Add to Cart
+
+</button>
+
+</div>
+
+</div>
+
+`
+).join("");
 
 }
 
 
-
 /* =====================================================
-   DELETE ORDER
+ADD CART
 ===================================================== */
 
+function addCart(id){
 
-async function deleteOrder(
-    orderId
+const product =
+products.find(
+p=>p.id===id
+);
+
+
+if(!product)
+return;
+
+
+const item =
+cart.find(
+x=>x.id===id
+);
+
+
+if(item){
+
+item.qty++;
+
+}else{
+
+cart.push({
+...product,
+qty:1
+});
+
+}
+
+
+saveCart();
+
+updateCart();
+
+toast("✓ Added to cart");
+
+}
+
+
+/* =====================================================
+SAVE CART
+===================================================== */
+
+function saveCart(){
+
+localStorage.setItem(
+"guptaCart",
+JSON.stringify(cart)
+);
+
+}
+
+
+/* =====================================================
+UPDATE CART
+===================================================== */
+
+function updateCart(){
+
+let count=0;
+
+let total=0;
+
+
+cart.forEach(
+item=>{
+
+count+=item.qty;
+
+total+=
+item.price*
+item.qty;
+
+}
+);
+
+
+document.getElementById(
+"cartCount"
+).textContent=count;
+
+
+document.getElementById(
+"cartTotal"
+).textContent=
+money(total);
+
+
+const box =
+document.getElementById(
+"cartItems"
+);
+
+
+if(!cart.length){
+
+box.innerHTML=`
+
+<div class="empty">
+
+🛒
+
+<br><br>
+
+Your cart is empty
+
+</div>
+
+`;
+
+return;
+
+}
+
+
+box.innerHTML =
+cart.map(
+item=>`
+
+<div class="cart-item">
+
+<img
+src="${item.image}"
+alt="${item.name}"
+>
+
+
+<div>
+
+<b>
+${item.name}
+</b>
+
+
+<p>
+${money(item.price)}
+</p>
+
+
+<div class="qty">
+
+<button
+onclick="changeQty(${item.id},-1)"
+>
+−
+</button>
+
+${item.qty}
+
+<button
+onclick="changeQty(${item.id},1)"
+>
++
+</button>
+
+</div>
+
+
+<button
+class="remove"
+onclick="removeItem(${item.id})"
+>
+
+Remove
+
+</button>
+
+</div>
+
+</div>
+
+`
+).join("");
+
+}
+
+
+/* =====================================================
+QUANTITY
+===================================================== */
+
+function changeQty(
+id,
+value
 ){
 
-
-    const confirmDelete =
-        confirm(
-            "Kya aap is order ko delete karna chahte hain?"
-        );
-
-
-    if(!confirmDelete)
-        return;
+const item =
+cart.find(
+x=>x.id===id
+);
 
 
-
-    const {
-        error
-    } = await supabaseClient
-
-        .from("orders")
-
-        .delete()
-
-        .eq(
-            "order_id",
-            orderId
-        );
+if(!item)
+return;
 
 
-
-    if(error){
-
-        console.error(
-            error
-        );
+item.qty+=value;
 
 
-        alert(
-            "Order delete nahi hua.\n\n" +
-            error.message
-        );
+if(item.qty<=0){
 
-
-        return;
-
-    }
-
-
-
-    alert(
-        "Order deleted successfully."
-    );
-
-
-    loadOrders();
+cart=
+cart.filter(
+x=>x.id!==id
+);
 
 }
 
 
+saveCart();
+
+updateCart();
+
+}
+
 
 /* =====================================================
-   START
+REMOVE
 ===================================================== */
 
+function removeItem(id){
 
-loadOrders();
+cart=
+cart.filter(
+x=>x.id!==id
+);
 
+
+saveCart();
+
+updateCart();
+
+}
+
+
+/* =====================================================
+CART
+===================================================== */
+
+function openCart(){
+
+document
+.getElementById("cart")
+.classList.add("open");
+
+
+document
+.getElementById("overlay")
+.classList.add("show");
+
+}
+
+
+function closeCart(){
+
+document
+.getElementById("cart")
+.classList.remove("open");
+
+
+document
+.getElementById("overlay")
+.classList.remove("show");
+
+}
+
+
+/* =====================================================
+CHECKOUT
+===================================================== */
+
+function checkout(){
+
+if(!cart.length){
+
+toast("Cart is empty");
+
+return;
+
+}
+
+
+closeCart();
+
+
+let html="";
+
+
+cart.forEach(
+item=>{
+
+html+=`
+
+<p>
+
+${item.name}
+× ${item.qty}
+
+<b>
+${money(
+item.price*
+item.qty
+)}
+</b>
+
+</p>
+
+`;
+
+}
+);
+
+
+document.getElementById(
+"checkoutSummary"
+).innerHTML=html;
+
+
+document
+.getElementById(
+"checkoutModal"
+)
+.classList.add("show");
+
+}
+
+
+function closeCheckout(){
+
+document
+.getElementById(
+"checkoutModal"
+)
+.classList.remove("show");
+
+}
+
+
+/* =====================================================
+PLACE ORDER
+===================================================== */
+
+async function placeOrder(e){
+
+e.preventDefault();
+
+
+if(!cart.length){
+
+toast("Cart is empty");
+
+return;
+
+}
+
+
+const button =
+e.target.querySelector(
+'button[type="submit"]'
+);
+
+
+button.disabled=true;
+
+button.textContent=
+"Placing Order...";
+
+
+try{
+
+
+const total =
+cart.reduce(
+(sum,item)=>
+sum+
+item.price*
+item.qty,
+0
+);
+
+
+const orderId =
+"GF"+
+Date.now()
+.toString()
+.slice(-6);
+
+
+const customer={
+
+name:
+document
+.getElementById("name")
+.value.trim(),
+
+phone:
+document
+.getElementById("phone")
+.value.trim(),
+
+address:
+document
+.getElementById("address")
+.value.trim(),
+
+city:
+document
+.getElementById("city")
+.value.trim(),
+
+state:
+document
+.getElementById("state")
+.value.trim(),
+
+pincode:
+document
+.getElementById("pincode")
+.value.trim()
+
+};
+
+
+const items =
+cart.map(
+item=>({
+
+id:item.id,
+
+name:item.name,
+
+category:item.category,
+
+price:item.price,
+
+qty:item.qty
+
+})
+);
+
+
+/* SAVE TO SUPABASE */
+
+const {
+data,
+error
+} = await supabaseClient
+
+.from("orders")
+
+.insert({
+
+order_id:orderId,
+
+customer_name:
+customer.name,
+
+customer_phone:
+customer.phone,
+
+customer_address:
+customer.address,
+
+customer_city:
+customer.city,
+
+customer_state:
+customer.state,
+
+customer_pincode:
+customer.pincode,
+
+items:items,
+
+total:total,
+
+payment:"COD",
+
+status:"New Order"
+
+})
+
+.select()
+.single();
+
+
+if(error){
+
+console.error(error);
+
+throw error;
+
+}
+
+
+/* WHATSAPP MESSAGE */
+
+const message =
+
+`*GUPTA FASHION ORDER*
+
+Order ID: ${orderId}
+
+Customer: ${customer.name}
+Mobile: ${customer.phone}
+
+Address:
+${customer.address},
+${customer.city},
+${customer.state} - ${customer.pincode}
+
+Total: ${money(total)}
+
+Payment: Cash on Delivery`;
+
+
+/* OPEN WHATSAPP ONLY AFTER DATABASE SAVE */
+
+window.open(
+
+"https://wa.me/"+
+WHATSAPP+
+"?text="+
+encodeURIComponent(message),
+
+"_blank"
+
+);
+
+
+/* CLEAR CART */
+
+cart=[];
+
+saveCart();
+
+updateCart();
+
+closeCheckout();
+
+
+alert(
+"Order placed successfully!\n\n"+
+"Your Order ID: "+
+orderId
+);
+
+
+}catch(error){
+
+console.error(error);
+
+
+alert(
+"Order place nahi hua.\n\n"+
+"Please try again."
+);
+
+
+}finally{
+
+button.disabled=false;
+
+button.textContent=
+"Place Order →";
+
+}
+
+}
+
+
+/* =====================================================
+TRACK ORDER
+===================================================== */
+
+async function trackOrder(){
+
+const id =
+document
+.getElementById("trackId")
+.value
+.trim()
+.toUpperCase();
+
+
+const phone =
+document
+.getElementById("trackPhone")
+.value
+.trim();
+
+
+if(!id || !phone){
+
+document.getElementById(
+"trackingResult"
+).innerHTML=`
+
+<div class="error">
+
+Please enter Order ID
+and Mobile Number.
+
+</div>
+
+`;
+
+return;
+
+}
+
+
+const {
+data:order,
+error
+} = await supabaseClient
+
+.from("orders")
+
+.select("*")
+
+.eq(
+"order_id",
+id
+)
+
+.eq(
+"customer_phone",
+phone
+)
+
+.maybeSingle();
+
+
+if(error){
+
+console.error(error);
+
+
+document.getElementById(
+"trackingResult"
+).innerHTML=`
+
+<div class="error">
+
+Unable to check order.
+
+</div>
+
+`;
+
+return;
+
+}
+
+
+if(!order){
+
+document.getElementById(
+"trackingResult"
+).innerHTML=`
+
+<div class="error">
+
+Order not found.
+
+</div>
+
+`;
+
+return;
+
+}
+
+
+const steps=[
+
+"New Order",
+
+"Confirmed",
+
+"Packed",
+
+"Out for Delivery",
+
+"Delivered"
+
+];
+
+
+const current =
+steps.indexOf(
+order.status
+);
+
+
+document.getElementById(
+"trackingResult"
+).innerHTML=`
+
+<div class="tracking">
+
+<h3>
+${order.order_id}
+</h3>
+
+
+${steps.map(
+(step,i)=>`
+
+<div class="
+tracking-step
+${i<=current?"done":""}
+">
+
+<span>
+
+${
+i<=current
+?"✓"
+:i+1
+}
+
+</span>
+
+${step}
+
+</div>
+
+`
+).join("")}
+
+
+<hr>
+
+
+<p>
+
+<b>
+Customer:
+</b>
+
+${order.customer_name}
+
+</p>
+
+
+<p>
+
+<b>
+Total:
+</b>
+
+${money(order.total)}
+
+</p>
+
+
+<p>
+
+<b>
+Payment:
+</b>
+
+Cash on Delivery
+
+</p>
+
+
+</div>
+
+`;
+
+}
+
+
+/* =====================================================
+TRACK MODAL
+===================================================== */
+
+function openTrack(){
+
+document
+.getElementById("trackModal")
+.classList.add("show");
+
+}
+
+
+function closeTrack(){
+
+document
+.getElementById("trackModal")
+.classList.remove("show");
+
+}
+
+
+/* =====================================================
+FILTER
+===================================================== */
+
+function filterProducts(
+category
+){
+
+if(category==="All"){
+
+displayProducts(
+products
+);
+
+return;
+
+}
+
+
+displayProducts(
+products.filter(
+p=>p.category===category
+)
+);
+
+}
+
+
+/* =====================================================
+SEARCH
+===================================================== */
+
+function searchProducts(){
+
+const value =
+document
+.getElementById(
+"searchInput"
+)
+.value
+.toLowerCase()
+.trim();
+
+
+displayProducts(
+
+products.filter(
+
+p=>
+
+p.name
+.toLowerCase()
+.includes(value)
+
+||
+
+p.category
+.toLowerCase()
+.includes(value)
+
+)
+
+);
+
+}
+
+
+/* =====================================================
+SCROLL
+===================================================== */
+
+function scrollProducts(){
+
+document
+.getElementById(
+"productsSection"
+)
+.scrollIntoView({
+
+behavior:"smooth"
+
+});
+
+}
+
+
+/* =====================================================
+TOAST
+===================================================== */
+
+function toast(text){
+
+const t =
+document.getElementById(
+"toast"
+);
+
+
+t.textContent=text;
+
+
+t.classList.add("show");
+
+
+setTimeout(
+()=>{
+
+t.classList.remove("show");
+
+},
+2000
+);
+
+}
+
+
+/* =====================================================
+START
+===================================================== */
+
+displayProducts();
+
+updateCart();
 
 </script>
-
 
 </body>
 
