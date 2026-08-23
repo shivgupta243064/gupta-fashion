@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width,initial-scale=1.0">
+
+<title>Gupta Fashion - Admin Panel</title>
+
+<link rel="stylesheet" href="style.css">
+
+<style>
+
+.admin-page{
+    max-width:1250px;
+    margin:30px auto;
+    padding:20px;
+}
+
+.admin-header{
+    background:#111827;
+    color:white;
+    padding:25px;
+    border-radius:20px;
+
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:15px;
+}
+
+.admin-header a{
+    background:#f59e0b;
+    color:#111827;
+    padding:12px 18px;
+    border-radius:10px;
+    text-decoration:none;
+    font-weight:bold;
+}
+
+.stats{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:15px;
+    margin:20px 0;
+}
+
+.stat-card{
+    background:white;
+    border:1px solid #e5e7eb;
+    border-radius:16px;
+    padding:22px;
+}
+
+.stat-card small{
+    color:#6b7280;
+}
+
+.stat-card h2{
+    margin-top:8px;
+}
+
+.orders-box{
+    background:white;
+    border-radius:18px;
+    padding:20px;
+    border:1px solid #e5e7eb;
+    overflow:auto;
+}
+
+table{
+    width:100%;
+    min-width:950px;
+    border-collapse:collapse;
+}
+
+th,td{
+    padding:13px;
+    border-bottom:1px solid #e5e7eb;
+    text-align:left;
+    font-size:13px;
+}
+
+select{
+    padding:9px;
+    border-radius:8px;
+    border:1px solid #ddd;
+}
+
+.wa{
+    color:#16a34a;
+    font-weight:bold;
+    text-decoration:none;
+}
+
+.delete{
+    background:#fee2e2;
+    color:#dc2626;
+    padding:8px 10px;
+    border-radius:8px;
+}
+
+@media(max-width:700px){
+
+    .stats{
+        grid-template-columns:1fr;
+    }
+
+    .admin-header{
+        flex-direction:column;
+        align-items:flex-start;
+    }
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="admin-page">
+
+    <div class="admin-header">
+
+        <div>
+            <h1>📊 Gupta Fashion</h1>
+            <p>Admin Panel</p>
+        </div>
+
+        <a href="index.html">
+            ← Customer Website
+        </a>
+
+    </div>
+
+
+    <div class="stats">
+
+        <div class="stat-card">
+            <small>Total Products</small>
+            <h2 id="productCount">8</h2>
+        </div>
+
+        <div class="stat-card">
+            <small>Total Orders</small>
+            <h2 id="orderCount">0</h2>
+        </div>
+
+        <div class="stat-card">
+            <small>Total Sales</small>
+            <h2 id="sales">₹0</h2>
+        </div>
+
+    </div>
+
+
+    <div class="orders-box">
+
+        <h2>📦 Customer Orders</h2>
+
+        <br>
+
+        <table>
+
+            <thead>
+
+                <tr>
+
+                    <th>Order ID</th>
+                    <th>Customer</th>
+                    <th>Products</th>
+                    <th>Total</th>
+                    <th>Payment</th>
+                    <th>Status</th>
+                    <th>WhatsApp</th>
+                    <th>Delete</th>
+
+                </tr>
+
+            </thead>
+
+            <tbody id="orders"></tbody>
+
+        </table>
+
+    </div>
+
+</div>
+
+
+<script>
+
+const statuses = [
+
+    "New Order",
+    "Confirmed",
+    "Packed",
+    "Out for Delivery",
+    "Delivered"
+
+];
+
+
+function money(n){
+
+    return "₹" +
+        Number(n).toLocaleString("en-IN");
+
+}
+
+
+function getOrders(){
+
+    return JSON.parse(
+        localStorage.getItem("guptaOrders")
+    ) || [];
+
+}
+
+
+function saveOrders(orders){
+
+    localStorage.setItem(
+        "guptaOrders",
+        JSON.stringify(orders)
+    );
+
+}
+
+
+function showOrders(){
+
+    const orders = getOrders();
+
+    document.getElementById("orderCount")
+        .textContent = orders.length;
+
+
+    let sales = 0;
+
+    orders.forEach(o=>{
+        sales += Number(o.total || 0);
+    });
+
+
+    document.getElementById("sales")
+        .textContent = money(sales);
+
+
+    const table =
+        document.getElementById("orders");
+
+
+    if(!orders.length){
+
+        table.innerHTML = `
+
+        <tr>
+            <td colspan="8"
+                style="text-align:center;padding:40px">
+
+                No orders yet.
+
+            </td>
+        </tr>
+
+        `;
+
+        return;
+    }
+
+
+    table.innerHTML = orders.map((order,index)=>`
+
+        <tr>
+
+            <td>
+                <b>${order.id}</b>
+                <br>
+                <small>${order.date}</small>
+            </td>
+
+
+            <td>
+
+                <b>${order.customer.name}</b>
+
+                <br>
+
+                📞 ${order.customer.phone}
+
+                <br>
+
+                ${order.customer.address}
+
+                <br>
+
+                ${order.customer.city},
+                ${order.customer.state}
+                -
+                ${order.customer.pincode}
+
+            </td>
+
+
+            <td>
+
+                ${order.items.map(item =>
+
+                    `${item.name} × ${item.qty}`
+
+                ).join("<br>")}
+
+            </td>
+
+
+            <td>
+
+                <b>${money(order.total)}</b>
+
+            </td>
+
+
+            <td>
+
+                ${
+                    order.payment === "COD"
+                    ? "Cash on Delivery"
+                    : "UPI / Online"
+                }
+
+            </td>
+
+
+            <td>
+
+                <select
+                    onchange="changeStatus(${index},this.value)"
+                >
+
+                    ${
+                        statuses.map(status => `
+
+                            <option
+                                ${
+                                    order.status === status
+                                    ? "selected"
+                                    : ""
+                                }
+                            >
+                                ${status}
+                            </option>
+
+                        `).join("")
+                    }
+
+                </select>
+
+            </td>
+
+
+            <td>
+
+                <a
+                    class="wa"
+                    target="_blank"
+                    href="https://wa.me/91${order.customer.phone}?text=${encodeURIComponent(
+                        "GUPTA FASHION - Order " +
+                        order.id +
+                        " status: " +
+                        order.status
+                    )}"
+                >
+
+                    WhatsApp
+
+                </a>
+
+            </td>
+
+
+            <td>
+
+                <button
+                    class="delete"
+                    onclick="deleteOrder(${index})"
+                >
+
+                    Delete
+
+                </button>
+
+            </td>
+
+        </tr>
+
+    `).join("");
+
+}
+
+
+function changeStatus(index,status){
+
+    const orders = getOrders();
+
+    if(!orders[index]) return;
+
+    orders[index].status = status;
+
+    saveOrders(orders);
+
+    showOrders();
+
+}
+
+
+function deleteOrder(index){
+
+    if(!confirm("Delete this order?"))
+        return;
+
+    const orders = getOrders();
+
+    orders.splice(index,1);
+
+    saveOrders(orders);
+
+    showOrders();
+
+}
+
+
+showOrders();
+
+</script>
+
+</body>
+</html>

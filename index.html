@@ -1,0 +1,1931 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0">
+
+<title>Gupta Fashion</title>
+
+<link rel="stylesheet" href="style.css">
+
+</head>
+
+
+<body>
+
+
+<!-- =========================
+     HEADER
+========================= -->
+
+<header>
+
+<nav class="navbar">
+
+    <div class="logo">
+        GUPTA<span>FASHION</span>
+    </div>
+
+
+    <div class="search">
+
+        <input
+            id="searchInput"
+            placeholder="Search shirts, shoes, belts..."
+            oninput="searchProducts()"
+        >
+
+        🔍
+
+    </div>
+
+
+    <div class="nav-actions">
+
+        <button
+            class="icon-btn"
+            onclick="scrollProducts()"
+        >
+            🛍️
+        </button>
+
+
+        <button
+            class="icon-btn"
+            onclick="openTrack()"
+        >
+            📦
+        </button>
+
+
+        <button
+            class="icon-btn"
+            onclick="openCart()"
+        >
+
+            🛒
+
+            <b id="cartCount">0</b>
+
+        </button>
+
+    </div>
+
+</nav>
+
+</header>
+
+
+
+<!-- =========================
+     HERO
+========================= -->
+
+<section class="hero">
+
+<div class="hero-content">
+
+    <small>
+        NEW MEN'S COLLECTION
+    </small>
+
+
+    <h1>
+        Style That<br>
+        Speaks.
+    </h1>
+
+
+    <p>
+        Premium shirts, stylish shoes and
+        quality belts — all in one place.
+    </p>
+
+
+    <button
+        class="primary"
+        onclick="scrollProducts()"
+    >
+        Shop Now →
+    </button>
+
+</div>
+
+</section>
+
+
+
+<!-- =========================
+     CATEGORIES
+========================= -->
+
+<section class="section">
+
+<h2>
+    Shop by Category
+</h2>
+
+
+<div class="categories">
+
+
+    <div
+        class="category"
+        onclick="filterProducts('Shirts')"
+    >
+
+        <h2>
+            👕 Shirts
+        </h2>
+
+        <p>
+            Smart & Casual
+        </p>
+
+    </div>
+
+
+
+    <div
+        class="category"
+        onclick="filterProducts('Shoes')"
+    >
+
+        <h2>
+            👟 Shoes
+        </h2>
+
+        <p>
+            Step in Style
+        </p>
+
+    </div>
+
+
+
+    <div
+        class="category"
+        onclick="filterProducts('Belts')"
+    >
+
+        <h2>
+            🧷 Belts
+        </h2>
+
+        <p>
+            Complete Your Look
+        </p>
+
+    </div>
+
+
+</div>
+
+</section>
+
+
+
+<!-- =========================
+     PRODUCTS
+========================= -->
+
+<section
+    class="section"
+    id="productsSection"
+>
+
+
+<div class="section-title">
+
+
+    <h2>
+        Featured Products
+    </h2>
+
+
+    <div class="filters">
+
+
+        <button
+            onclick="filterProducts('All')"
+        >
+            All
+        </button>
+
+
+        <button
+            onclick="filterProducts('Shirts')"
+        >
+            Shirts
+        </button>
+
+
+        <button
+            onclick="filterProducts('Shoes')"
+        >
+            Shoes
+        </button>
+
+
+        <button
+            onclick="filterProducts('Belts')"
+        >
+            Belts
+        </button>
+
+
+    </div>
+
+</div>
+
+
+
+<div
+    class="products"
+    id="products"
+></div>
+
+
+</section>
+
+
+
+<!-- =========================
+     FOOTER
+========================= -->
+
+<footer>
+
+<h2>
+    GUPTA<span>FASHION</span>
+</h2>
+
+
+<p>
+    Modern men's fashion at affordable prices.
+</p>
+
+
+<p>
+    WhatsApp: 9236312403
+</p>
+
+</footer>
+
+
+
+<!-- =========================
+     CART
+========================= -->
+
+<div
+    class="overlay"
+    id="overlay"
+    onclick="closeCart()"
+></div>
+
+
+
+<div
+    class="cart"
+    id="cart"
+>
+
+
+<div class="cart-head">
+
+    <h2>
+        Your Cart
+    </h2>
+
+
+    <button
+        onclick="closeCart()"
+    >
+        ✕
+    </button>
+
+</div>
+
+
+
+<div
+    id="cartItems"
+></div>
+
+
+
+<div class="cart-bottom">
+
+
+    <h3>
+
+        Total:
+
+        <span id="cartTotal">
+            ₹0
+        </span>
+
+    </h3>
+
+
+    <button
+        class="primary full"
+        onclick="checkout()"
+    >
+        Proceed to Checkout →
+    </button>
+
+
+</div>
+
+</div>
+
+
+
+<!-- =========================
+     CHECKOUT
+========================= -->
+
+<div
+    class="modal"
+    id="checkoutModal"
+>
+
+
+<div class="modal-box">
+
+
+    <button
+        class="close"
+        onclick="closeCheckout()"
+    >
+        ✕
+    </button>
+
+
+    <h2>
+        Checkout
+    </h2>
+
+
+    <div
+        id="checkoutSummary"
+    ></div>
+
+
+
+    <form
+        onsubmit="placeOrder(event)"
+    >
+
+
+        <input
+            id="name"
+            required
+            minlength="2"
+            placeholder="Full Name"
+        >
+
+
+
+        <input
+            id="phone"
+            required
+            maxlength="10"
+            pattern="[0-9]{10}"
+            inputmode="numeric"
+            placeholder="10 Digit Mobile Number"
+        >
+
+
+
+        <textarea
+            id="address"
+            required
+            minlength="10"
+            placeholder="Complete Address / House No. / Area"
+        ></textarea>
+
+
+
+        <input
+            id="city"
+            required
+            minlength="2"
+            placeholder="City"
+        >
+
+
+
+        <input
+            id="state"
+            required
+            minlength="2"
+            placeholder="State"
+        >
+
+
+
+        <input
+            id="pincode"
+            required
+            maxlength="6"
+            pattern="[0-9]{6}"
+            inputmode="numeric"
+            placeholder="6 Digit Pincode"
+        >
+
+
+
+        <!-- PAYMENT -->
+
+        <h3>
+            Payment Method
+        </h3>
+
+
+        <label class="payment-option">
+
+            <input
+                type="radio"
+                name="payment"
+                value="COD"
+                checked
+            >
+
+            💵 Cash on Delivery
+
+        </label>
+
+
+
+        <button
+            class="primary full"
+            type="submit"
+        >
+            Confirm Order →
+        </button>
+
+
+    </form>
+
+
+</div>
+
+</div>
+
+
+
+<!-- =========================
+     TRACK ORDER
+========================= -->
+
+<div
+    class="modal"
+    id="trackModal"
+>
+
+
+<div class="modal-box">
+
+
+    <button
+        class="close"
+        onclick="closeTrack()"
+    >
+        ✕
+    </button>
+
+
+    <h2>
+        📦 Track Your Order
+    </h2>
+
+
+
+    <input
+        id="trackId"
+        placeholder="Order ID e.g. GF123456"
+    >
+
+
+
+    <input
+        id="trackPhone"
+        maxlength="10"
+        pattern="[0-9]{10}"
+        inputmode="numeric"
+        placeholder="Mobile Number"
+    >
+
+
+
+    <button
+        class="primary full"
+        onclick="trackOrder()"
+    >
+        Track Order
+    </button>
+
+
+
+    <div
+        id="trackingResult"
+    ></div>
+
+
+</div>
+
+</div>
+
+
+
+<div
+    class="toast"
+    id="toast"
+></div>
+
+
+
+<script>
+
+
+/* =========================
+   SETTINGS
+========================= */
+
+const WHATSAPP =
+    "919236312403";
+
+
+
+/* =========================
+   PRODUCTS
+========================= */
+
+const products = [
+
+
+{
+    id:1,
+
+    name:
+        "Classic Black Casual Shirt",
+
+    category:
+        "Shirts",
+
+    price:
+        699,
+
+    old:
+        999,
+
+    image:
+        "https://images.unsplash.com/photo-1603252109303-2751441dd157?auto=format&fit=crop&w=700&q=80"
+},
+
+
+
+{
+    id:2,
+
+    name:
+        "Premium White Formal Shirt",
+
+    category:
+        "Shirts",
+
+    price:
+        799,
+
+    old:
+        1199,
+
+    image:
+        "https://images.unsplash.com/photo-1598033129183-c4f50c736f10?auto=format&fit=crop&w=700&q=80"
+},
+
+
+
+{
+    id:3,
+
+    name:
+        "Blue Casual Shirt",
+
+    category:
+        "Shirts",
+
+    price:
+        749,
+
+    old:
+        999,
+
+    image:
+        "https://images.unsplash.com/photo-1621072156002-e2fccdc0b176?auto=format&fit=crop&w=700&q=80"
+},
+
+
+
+{
+    id:4,
+
+    name:
+        "Urban Black Sneakers",
+
+    category:
+        "Shoes",
+
+    price:
+        1299,
+
+    old:
+        1799,
+
+    image:
+        "https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&w=700&q=80"
+},
+
+
+
+{
+    id:5,
+
+    name:
+        "Classic White Sneakers",
+
+    category:
+        "Shoes",
+
+    price:
+        1199,
+
+    old:
+        1699,
+
+    image:
+        "https://images.unsplash.com/photo-1495555961986-6d4c1ecb7be3?auto=format&fit=crop&w=700&q=80"
+},
+
+
+
+{
+    id:6,
+
+    name:
+        "Premium Brown Formal Shoes",
+
+    category:
+        "Shoes",
+
+    price:
+        1599,
+
+    old:
+        2199,
+
+    image:
+        "https://images.unsplash.com/photo-1614252369475-531eba835eb1?auto=format&fit=crop&w=700&q=80"
+},
+
+
+
+{
+    id:7,
+
+    name:
+        "Classic Black Leather Belt",
+
+    category:
+        "Belts",
+
+    price:
+        399,
+
+    old:
+        599,
+
+    image:
+        "https://images.unsplash.com/photo-1624222247344-550fb60583dc?auto=format&fit=crop&w=700&q=80"
+},
+
+
+
+{
+    id:8,
+
+    name:
+        "Premium Brown Leather Belt",
+
+    category:
+        "Belts",
+
+    price:
+        449,
+
+    old:
+        699,
+
+    image:
+        "https://images.unsplash.com/photo-1553062407-98eeb64c6a62?auto=format&fit=crop&w=700&q=80"
+}
+
+
+];
+
+
+
+/* =========================
+   DATA
+========================= */
+
+let cart =
+    JSON.parse(
+        localStorage.getItem(
+            "guptaCart"
+        )
+    ) || [];
+
+
+let orders =
+    JSON.parse(
+        localStorage.getItem(
+            "guptaOrders"
+        )
+    ) || [];
+
+
+
+/* =========================
+   MONEY
+========================= */
+
+function money(n){
+
+    return "₹" +
+        Number(n)
+        .toLocaleString("en-IN");
+
+}
+
+
+
+/* =========================
+   PRODUCTS
+========================= */
+
+function displayProducts(
+    list = products
+){
+
+    const box =
+        document.getElementById(
+            "products"
+        );
+
+
+    box.innerHTML =
+        list.map(
+            p => `
+
+            <div class="product">
+
+
+                <div class="product-img">
+
+                    <img
+                        src="${p.image}"
+                        alt="${p.name}"
+                    >
+
+                </div>
+
+
+
+                <div class="product-info">
+
+                    <small>
+                        ${p.category}
+                    </small>
+
+
+                    <h3>
+                        ${p.name}
+                    </h3>
+
+
+                    <div class="price">
+
+                        ${money(p.price)}
+
+                        <del>
+                            ${money(p.old)}
+                        </del>
+
+                    </div>
+
+
+                    <button
+                        class="add"
+                        onclick="addCart(${p.id})"
+                    >
+                        Add to Cart
+                    </button>
+
+
+                </div>
+
+
+            </div>
+
+        `
+        ).join("");
+
+}
+
+
+
+/* =========================
+   ADD CART
+========================= */
+
+function addCart(id){
+
+    const product =
+        products.find(
+            p => p.id === id
+        );
+
+
+    if(!product)
+        return;
+
+
+    const item =
+        cart.find(
+            x => x.id === id
+        );
+
+
+    if(item){
+
+        item.qty++;
+
+    }
+
+    else{
+
+        cart.push({
+
+            ...product,
+
+            qty:1
+
+        });
+
+    }
+
+
+    saveCart();
+
+    updateCart();
+
+
+    toast(
+        "✓ Added to cart"
+    );
+
+}
+
+
+
+/* =========================
+   SAVE CART
+========================= */
+
+function saveCart(){
+
+    localStorage.setItem(
+        "guptaCart",
+        JSON.stringify(cart)
+    );
+
+}
+
+
+
+/* =========================
+   UPDATE CART
+========================= */
+
+function updateCart(){
+
+    let count = 0;
+
+    let total = 0;
+
+
+    cart.forEach(
+        item => {
+
+            count +=
+                item.qty;
+
+            total +=
+                item.price *
+                item.qty;
+
+        }
+    );
+
+
+    document.getElementById(
+        "cartCount"
+    ).textContent =
+        count;
+
+
+    document.getElementById(
+        "cartTotal"
+    ).textContent =
+        money(total);
+
+
+    const box =
+        document.getElementById(
+            "cartItems"
+        );
+
+
+    if(!cart.length){
+
+        box.innerHTML = `
+
+            <div class="empty">
+
+                🛒
+
+                <br><br>
+
+                Your cart is empty
+
+            </div>
+
+        `;
+
+        return;
+
+    }
+
+
+    box.innerHTML =
+        cart.map(
+            item => `
+
+            <div class="cart-item">
+
+
+                <img
+                    src="${item.image}"
+                    alt="${item.name}"
+                >
+
+
+                <div>
+
+                    <b>
+                        ${item.name}
+                    </b>
+
+
+                    <p>
+                        ${money(item.price)}
+                    </p>
+
+
+                    <div class="qty">
+
+
+                        <button
+                            onclick="changeQty(
+                                ${item.id},
+                                -1
+                            )"
+                        >
+                            −
+                        </button>
+
+
+                        ${item.qty}
+
+
+                        <button
+                            onclick="changeQty(
+                                ${item.id},
+                                1
+                            )"
+                        >
+                            +
+                        </button>
+
+
+                    </div>
+
+
+                    <button
+                        class="remove"
+                        onclick="removeItem(
+                            ${item.id}
+                        )"
+                    >
+                        Remove
+                    </button>
+
+
+                </div>
+
+
+            </div>
+
+        `
+        ).join("");
+
+}
+
+
+
+/* =========================
+   QUANTITY
+========================= */
+
+function changeQty(
+    id,
+    value
+){
+
+    const item =
+        cart.find(
+            x => x.id === id
+        );
+
+
+    if(!item)
+        return;
+
+
+    item.qty += value;
+
+
+    if(item.qty <= 0){
+
+        cart =
+            cart.filter(
+                x => x.id !== id
+            );
+
+    }
+
+
+    saveCart();
+
+    updateCart();
+
+}
+
+
+
+/* =========================
+   REMOVE
+========================= */
+
+function removeItem(id){
+
+    cart =
+        cart.filter(
+            x => x.id !== id
+        );
+
+
+    saveCart();
+
+    updateCart();
+
+}
+
+
+
+/* =========================
+   CART OPEN
+========================= */
+
+function openCart(){
+
+    document
+        .getElementById(
+            "cart"
+        )
+        .classList.add(
+            "open"
+        );
+
+
+    document
+        .getElementById(
+            "overlay"
+        )
+        .classList.add(
+            "show"
+        );
+
+}
+
+
+
+/* =========================
+   CART CLOSE
+========================= */
+
+function closeCart(){
+
+    document
+        .getElementById(
+            "cart"
+        )
+        .classList.remove(
+            "open"
+        );
+
+
+    document
+        .getElementById(
+            "overlay"
+        )
+        .classList.remove(
+            "show"
+        );
+
+}
+
+
+
+/* =========================
+   CHECKOUT
+========================= */
+
+function checkout(){
+
+    if(!cart.length){
+
+        toast(
+            "Cart is empty"
+        );
+
+        return;
+
+    }
+
+
+    closeCart();
+
+
+    let html = "";
+
+
+    cart.forEach(
+        item => {
+
+            html += `
+
+                <p>
+
+                    ${item.name}
+                    × ${item.qty}
+
+                    <b>
+                        ${money(
+                            item.price *
+                            item.qty
+                        )}
+                    </b>
+
+                </p>
+
+            `;
+
+        }
+    );
+
+
+    document.getElementById(
+        "checkoutSummary"
+    ).innerHTML =
+        html;
+
+
+    document
+        .getElementById(
+            "checkoutModal"
+        )
+        .classList.add(
+            "show"
+        );
+
+}
+
+
+
+/* =========================
+   CLOSE CHECKOUT
+========================= */
+
+function closeCheckout(){
+
+    document
+        .getElementById(
+            "checkoutModal"
+        )
+        .classList.remove(
+            "show"
+        );
+
+}
+
+
+
+/* =========================
+   PLACE ORDER
+========================= */
+
+function placeOrder(e){
+
+    e.preventDefault();
+
+
+    if(!cart.length){
+
+        toast(
+            "Cart is empty"
+        );
+
+        return;
+
+    }
+
+
+    const name =
+        document
+        .getElementById(
+            "name"
+        )
+        .value
+        .trim();
+
+
+    const phone =
+        document
+        .getElementById(
+            "phone"
+        )
+        .value
+        .trim();
+
+
+    const address =
+        document
+        .getElementById(
+            "address"
+        )
+        .value
+        .trim();
+
+
+    const city =
+        document
+        .getElementById(
+            "city"
+        )
+        .value
+        .trim();
+
+
+    const state =
+        document
+        .getElementById(
+            "state"
+        )
+        .value
+        .trim();
+
+
+    const pincode =
+        document
+        .getElementById(
+            "pincode"
+        )
+        .value
+        .trim();
+
+
+
+    /* VALIDATION */
+
+
+    if(!/^[0-9]{10}$/.test(phone)){
+
+        alert(
+            "Please enter a valid 10 digit mobile number."
+        );
+
+        return;
+
+    }
+
+
+    if(!/^[0-9]{6}$/.test(pincode)){
+
+        alert(
+            "Please enter a valid 6 digit pincode."
+        );
+
+        return;
+
+    }
+
+
+    if(address.length < 10){
+
+        alert(
+            "Please enter your complete address."
+        );
+
+        return;
+
+    }
+
+
+    if(city.length < 2){
+
+        alert(
+            "Please enter a valid city."
+        );
+
+        return;
+
+    }
+
+
+    if(state.length < 2){
+
+        alert(
+            "Please enter a valid state."
+        );
+
+        return;
+
+    }
+
+
+
+    /* TOTAL */
+
+
+    const total =
+        cart.reduce(
+            (sum,item) =>
+                sum +
+                item.price *
+                item.qty,
+            0
+        );
+
+
+
+    /* ADDRESS CONFIRMATION */
+
+
+    const confirmation =
+
+`Please confirm your delivery details:
+
+Name: ${name}
+
+Mobile: ${phone}
+
+Address:
+${address}
+
+City: ${city}
+
+State: ${state}
+
+Pincode: ${pincode}
+
+Total: ${money(total)}
+
+Payment: Cash on Delivery`;
+
+
+    const confirmed =
+        confirm(
+            confirmation +
+            "\n\nIs this address correct?"
+        );
+
+
+    if(!confirmed){
+
+        return;
+
+    }
+
+
+
+    /* ORDER */
+
+
+    const order = {
+
+        id:
+            "GF" +
+            Date.now()
+            .toString()
+            .slice(-6),
+
+
+        customer: {
+
+            name:
+                name,
+
+            phone:
+                phone,
+
+            address:
+                address,
+
+            city:
+                city,
+
+            state:
+                state,
+
+            pincode:
+                pincode
+
+        },
+
+
+        items:
+            [...cart],
+
+
+        total:
+            total,
+
+
+        payment:
+            "COD",
+
+
+        status:
+            "New Order",
+
+
+        date:
+            new Date()
+            .toLocaleString(
+                "en-IN"
+            )
+
+    };
+
+
+
+    /* SAVE ORDER */
+
+
+    orders.unshift(
+        order
+    );
+
+
+    localStorage.setItem(
+        "guptaOrders",
+        JSON.stringify(
+            orders
+        )
+    );
+
+
+
+    /* CLEAR CART */
+
+
+    cart = [];
+
+
+    saveCart();
+
+    updateCart();
+
+
+    closeCheckout();
+
+
+
+    /* WHATSAPP NOTIFICATION */
+
+
+    const message =
+
+`*GUPTA FASHION ORDER*
+
+Order ID: ${order.id}
+
+Customer: ${order.customer.name}
+
+Mobile: ${order.customer.phone}
+
+Address:
+${order.customer.address}
+${order.customer.city}
+${order.customer.state} - ${order.customer.pincode}
+
+Total: ${money(order.total)}
+
+Payment: Cash on Delivery`;
+
+
+
+    window.open(
+
+        "https://wa.me/" +
+        WHATSAPP +
+        "?text=" +
+        encodeURIComponent(
+            message
+        ),
+
+        "_blank"
+
+    );
+
+
+
+    alert(
+
+        "Order placed successfully!\n\n" +
+
+        "Your Order ID: " +
+        order.id
+
+    );
+
+}
+
+
+
+/* =========================
+   TRACK
+========================= */
+
+function openTrack(){
+
+    document
+        .getElementById(
+            "trackModal"
+        )
+        .classList.add(
+            "show"
+        );
+
+}
+
+
+function closeTrack(){
+
+    document
+        .getElementById(
+            "trackModal"
+        )
+        .classList.remove(
+            "show"
+        );
+
+}
+
+
+
+/* =========================
+   TRACK ORDER
+========================= */
+
+function trackOrder(){
+
+    const id =
+        document
+        .getElementById(
+            "trackId"
+        )
+        .value
+        .trim()
+        .toUpperCase();
+
+
+    const phone =
+        document
+        .getElementById(
+            "trackPhone"
+        )
+        .value
+        .trim();
+
+
+    const order =
+        orders.find(
+            o =>
+                o.id
+                .toUpperCase() === id
+                &&
+                o.customer.phone === phone
+        );
+
+
+    if(!order){
+
+        document
+        .getElementById(
+            "trackingResult"
+        )
+        .innerHTML = `
+
+            <div class="error">
+
+                Order not found.
+
+            </div>
+
+        `;
+
+        return;
+
+    }
+
+
+    const steps = [
+
+        "New Order",
+
+        "Confirmed",
+
+        "Packed",
+
+        "Out for Delivery",
+
+        "Delivered"
+
+    ];
+
+
+    const current =
+        steps.indexOf(
+            order.status
+        );
+
+
+    document
+    .getElementById(
+        "trackingResult"
+    )
+    .innerHTML = `
+
+        <div class="tracking">
+
+
+            <h3>
+                ${order.id}
+            </h3>
+
+
+            ${steps.map(
+                (step,i) => `
+
+                <div class="
+                    tracking-step
+                    ${
+                        i <= current
+                        ? "done"
+                        : ""
+                    }
+                ">
+
+
+                    <span>
+
+                        ${
+                            i <= current
+                            ? "✓"
+                            : i + 1
+                        }
+
+                    </span>
+
+
+                    ${step}
+
+
+                </div>
+
+            `
+            ).join("")}
+
+
+            <hr>
+
+
+            <p>
+
+                <b>
+                    Customer:
+                </b>
+
+                ${order.customer.name}
+
+            </p>
+
+
+            <p>
+
+                <b>
+                    Total:
+                </b>
+
+                ${money(
+                    order.total
+                )}
+
+            </p>
+
+
+            <p>
+
+                <b>
+                    Payment:
+                </b>
+
+                Cash on Delivery
+
+            </p>
+
+
+        </div>
+
+    `;
+
+}
+
+
+
+/* =========================
+   FILTER
+========================= */
+
+function filterProducts(
+    category
+){
+
+    if(category === "All"){
+
+        displayProducts(
+            products
+        );
+
+        return;
+
+    }
+
+
+    displayProducts(
+
+        products.filter(
+            p =>
+                p.category ===
+                category
+        )
+
+    );
+
+}
+
+
+
+/* =========================
+   SEARCH
+========================= */
+
+function searchProducts(){
+
+    const value =
+        document
+        .getElementById(
+            "searchInput"
+        )
+        .value
+        .toLowerCase();
+
+
+    displayProducts(
+
+        products.filter(
+            p =>
+                p.name
+                .toLowerCase()
+                .includes(value)
+                ||
+                p.category
+                .toLowerCase()
+                .includes(value)
+        )
+
+    );
+
+}
+
+
+
+/* =========================
+   SCROLL
+========================= */
+
+function scrollProducts(){
+
+    document
+        .getElementById(
+            "productsSection"
+        )
+        .scrollIntoView({
+            behavior:
+                "smooth"
+        });
+
+}
+
+
+
+/* =========================
+   TOAST
+========================= */
+
+function toast(text){
+
+    const t =
+        document.getElementById(
+            "toast"
+        );
+
+
+    t.textContent =
+        text;
+
+
+    t.classList.add(
+        "show"
+    );
+
+
+    setTimeout(
+        () => {
+
+            t.classList.remove(
+                "show"
+            );
+
+        },
+        2000
+    );
+
+}
+
+
+
+/* =========================
+   START
+========================= */
+
+displayProducts();
+
+updateCart();
+
+
+</script>
+
+
+</body>
+</html>
