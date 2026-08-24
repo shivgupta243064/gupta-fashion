@@ -25,16 +25,15 @@ body{
     color:#111827;
 }
 
-button,
-input,
-textarea,
-select{
+button,input,textarea,select{
     font-family:inherit;
 }
 
 button{
     cursor:pointer;
 }
+
+/* NAVBAR */
 
 .navbar{
     position:sticky;
@@ -50,7 +49,6 @@ button{
     margin:auto;
     min-height:74px;
     padding:12px 20px;
-
     display:flex;
     align-items:center;
     gap:22px;
@@ -166,6 +164,8 @@ button{
     justify-content:center;
 }
 
+/* HERO */
+
 .hero{
     min-height:480px;
     display:flex;
@@ -218,6 +218,8 @@ button{
     box-shadow:0 10px 25px rgba(245,158,11,.25);
 }
 
+/* SECTIONS */
+
 .section{
     max-width:1250px;
     margin:auto;
@@ -235,6 +237,8 @@ button{
 .section-title h2{
     font-size:28px;
 }
+
+/* CATEGORIES */
 
 .categories{
     display:grid;
@@ -298,6 +302,8 @@ button{
     background-image:url("https://images.unsplash.com/photo-1624222247344-550fb60583dc?auto=format&fit=crop&w=900&q=85");
 }
 
+/* FILTER */
+
 .filters{
     display:flex;
     gap:8px;
@@ -317,6 +323,8 @@ button{
     background:#111827;
     color:white;
 }
+
+/* PRODUCTS */
 
 .products{
     display:grid;
@@ -428,6 +436,8 @@ button{
 .not-available p{
     color:#6b7280;
 }
+
+/* FOOTER */
 
 .footer{
     background:#111827;
@@ -563,16 +573,26 @@ button{
     border-top:1px solid #e5e7eb;
 }
 
-.cart-total{
+.price-row{
     display:flex;
     justify-content:space-between;
+    margin-bottom:8px;
+    color:#4b5563;
+}
+
+.price-row.grand{
+    color:#111827;
     font-size:20px;
     font-weight:900;
+    border-top:1px solid #e5e7eb;
+    padding-top:10px;
+    margin-top:5px;
     margin-bottom:15px;
 }
 
-.full{
-    width:100%;
+.free-delivery{
+    color:#059669;
+    font-weight:800;
 }
 
 /* MODALS */
@@ -668,6 +688,13 @@ button{
     gap:10px;
     padding:5px 0;
     font-size:13px;
+}
+
+.checkout-summary{
+    background:#f9fafb;
+    border-radius:12px;
+    padding:14px;
+    margin-bottom:15px;
 }
 
 .success-box{
@@ -827,10 +854,7 @@ button{
 
 <body>
 
-<!-- NAVBAR -->
-
 <header class="navbar">
-
 <div class="nav-inner">
 
 <div class="logo">
@@ -838,7 +862,6 @@ GUPTA<span>FASHION</span>
 </div>
 
 <div class="search-wrap">
-
 <div class="search-box">
 
 <span class="search-icon">🔍</span>
@@ -861,7 +884,6 @@ type="button"
 </button>
 
 </div>
-
 </div>
 
 <div class="nav-buttons">
@@ -880,30 +902,19 @@ onclick="openCart()"
 title="Cart"
 >
 🛒
-<span
-id="cartCount"
-class="cart-count"
->
-0
-</span>
+<span id="cartCount" class="cart-count">0</span>
 </button>
 
 </div>
-
 </div>
-
 </header>
 
-
-<!-- HERO -->
 
 <section class="hero">
 
 <div class="hero-content">
 
-<small>
-GUPTA FASHION
-</small>
+<small>GUPTA FASHION</small>
 
 <h1>
 Style That<br>
@@ -922,20 +933,13 @@ Shop Now →
 </button>
 
 </div>
-
 </section>
 
-
-<!-- CATEGORIES -->
 
 <section class="section">
 
 <div class="section-title">
-
-<h2>
-Shop by Category
-</h2>
-
+<h2>Shop by Category</h2>
 </div>
 
 <div class="categories">
@@ -944,55 +948,29 @@ Shop by Category
 class="category-card shirt-card"
 onclick="showCategory('Shirts')"
 >
-
-<h3>
-👕 Shirts
-</h3>
-
-<p>
-10 stylish shirts
-</p>
-
+<h3>👕 Shirts</h3>
+<p>10 stylish shirts</p>
 </div>
-
 
 <div
 class="category-card shoe-card"
 onclick="showCategory('Shoes')"
 >
-
-<h3>
-👟 Shoes
-</h3>
-
-<p>
-10 sneakers & sports shoes
-</p>
-
+<h3>👟 Shoes</h3>
+<p>10 sneakers & sports shoes</p>
 </div>
-
 
 <div
 class="category-card belt-card"
 onclick="showCategory('Belts')"
 >
-
-<h3>
-🧷 Belts
-</h3>
-
-<p>
-5 premium belts
-</p>
-
+<h3>🧷 Belts</h3>
+<p>5 premium belts</p>
 </div>
 
 </div>
-
 </section>
 
-
-<!-- PRODUCTS -->
 
 <section
 class="section"
@@ -1036,7 +1014,6 @@ Belts
 </button>
 
 </div>
-
 </div>
 
 <div
@@ -1047,30 +1024,24 @@ id="products"
 </section>
 
 
-<!-- FOOTER -->
-
 <footer class="footer">
 
 <h2>
 GUPTA<span>FASHION</span>
 </h2>
 
-<p>
-Men's fashion at affordable prices.
-</p>
+<p>Men's fashion at affordable prices.</p>
 
-<p>
-📞 9236312403
-</p>
+<p>📞 9236312403</p>
 
-<p>
-💵 Cash on Delivery Available
-</p>
+<p>💵 Cash on Delivery Available</p>
+
+<p>🚚 ₹2,000+ FREE DELIVERY</p>
+
+<p>🚚 Below ₹2,000: ₹70 DELIVERY</p>
 
 </footer>
 
-
-<!-- OVERLAY -->
 
 <div
 id="overlay"
@@ -1079,8 +1050,6 @@ onclick="closeCart()"
 ></div>
 
 
-<!-- CART -->
-
 <aside
 id="cartPanel"
 class="cart-panel"
@@ -1088,9 +1057,7 @@ class="cart-panel"
 
 <div class="cart-head">
 
-<h2>
-Your Cart
-</h2>
+<h2>Your Cart</h2>
 
 <button
 class="close-btn"
@@ -1108,14 +1075,19 @@ class="cart-items"
 
 <div class="cart-bottom">
 
-<div class="cart-total">
+<div class="price-row">
+<span>Subtotal</span>
+<strong id="cartSubtotal">₹0</strong>
+</div>
 
-<span>Total</span>
+<div class="price-row">
+<span>Delivery</span>
+<strong id="cartDelivery">₹0</strong>
+</div>
 
-<span id="cartTotal">
-₹0
-</span>
-
+<div class="price-row grand">
+<span>Grand Total</span>
+<strong id="cartTotal">₹0</strong>
 </div>
 
 <button
@@ -1126,11 +1098,8 @@ Proceed to Checkout →
 </button>
 
 </div>
-
 </aside>
 
-
-<!-- CHECKOUT MODAL -->
 
 <div
 id="checkoutModal"
@@ -1146,13 +1115,16 @@ onclick="closeCheckout()"
 ×
 </button>
 
-<h2>
-Checkout
-</h2>
+<h2>Checkout</h2>
 
 <div
 id="checkoutProducts"
 class="checkout-products"
+></div>
+
+<div
+id="checkoutSummary"
+class="checkout-summary"
 ></div>
 
 <form
@@ -1161,25 +1133,16 @@ onsubmit="placeOrder(event)"
 >
 
 <div class="form-group">
-
-<label>
-Full Name
-</label>
-
+<label>Full Name</label>
 <input
 id="customerName"
 required
 placeholder="Enter your name"
 >
-
 </div>
 
 <div class="form-group">
-
-<label>
-Mobile Number
-</label>
-
+<label>Mobile Number</label>
 <input
 id="customerPhone"
 required
@@ -1187,57 +1150,37 @@ maxlength="10"
 pattern="[0-9]{10}"
 placeholder="10 digit mobile number"
 >
-
 </div>
 
 <div class="form-group">
-
-<label>
-Complete Address
-</label>
-
+<label>Complete Address</label>
 <textarea
 id="customerAddress"
 required
 placeholder="House no., street, area"
 ></textarea>
-
 </div>
 
 <div class="form-group">
-
-<label>
-City
-</label>
-
+<label>City</label>
 <input
 id="customerCity"
 required
 value="Kanpur"
 >
-
 </div>
 
 <div class="form-group">
-
-<label>
-State
-</label>
-
+<label>State</label>
 <input
 id="customerState"
 required
 value="Uttar Pradesh"
 >
-
 </div>
 
 <div class="form-group">
-
-<label>
-Pincode
-</label>
-
+<label>Pincode</label>
 <input
 id="customerPincode"
 required
@@ -1245,7 +1188,6 @@ maxlength="6"
 pattern="[0-9]{6}"
 placeholder="6 digit pincode"
 >
-
 </div>
 
 <div class="payment-box">
@@ -1259,9 +1201,7 @@ value="COD"
 
 <div>
 
-<strong>
-💵 Cash on Delivery
-</strong>
+<strong>💵 Cash on Delivery</strong>
 
 <br>
 
@@ -1284,11 +1224,8 @@ Confirm Order →
 </form>
 
 </div>
-
 </div>
 
-
-<!-- SUCCESS MODAL -->
 
 <div
 id="successModal"
@@ -1299,17 +1236,11 @@ class="modal"
 
 <div class="success-box">
 
-<div class="success-icon">
-✅
-</div>
+<div class="success-icon">✅</div>
 
-<h2>
-Order Confirmed!
-</h2>
+<h2>Order Confirmed!</h2>
 
-<p>
-Your order has been successfully placed.
-</p>
+<p>Your order has been successfully placed.</p>
 
 <div
 id="successOrderId"
@@ -1332,11 +1263,8 @@ Done
 </div>
 
 </div>
-
 </div>
 
-
-<!-- TRACKING MODAL -->
 
 <div
 id="trackingModal"
@@ -1352,9 +1280,7 @@ onclick="closeTracking()"
 ×
 </button>
 
-<h2>
-📦 Track Your Order
-</h2>
+<h2>📦 Track Your Order</h2>
 
 <input
 id="trackingOrderId"
@@ -1382,7 +1308,6 @@ class="track-result"
 ></div>
 
 </div>
-
 </div>
 
 
@@ -1420,12 +1345,18 @@ const WHATSAPP_NUMBER =
 
 
 /* =====================================================
+   DELIVERY
+===================================================== */
+
+const FREE_DELIVERY_LIMIT = 2000;
+const NORMAL_DELIVERY_CHARGE = 70;
+
+
+/* =====================================================
    PRODUCTS
 ===================================================== */
 
 const products = [
-
-/* SHIRTS */
 
 {
 id:1,
@@ -1517,9 +1448,6 @@ oldPrice:1299,
 image:"https://images.unsplash.com/photo-1610652492500-ded49ceeb378?auto=format&fit=crop&w=800&q=85"
 },
 
-
-/* SHOES */
-
 {
 id:11,
 name:"Black Sports Running Shoes",
@@ -1610,9 +1538,6 @@ oldPrice:1999,
 image:"https://images.unsplash.com/photo-1518002171953-a080ee817e1f?auto=format&fit=crop&w=800&q=85"
 },
 
-
-/* BELTS */
-
 {
 id:21,
 name:"Classic Black Leather Belt",
@@ -1685,6 +1610,19 @@ Number(value || 0)
 
 
 /* =====================================================
+   DELIVERY CALCULATION
+===================================================== */
+
+function calculateDelivery(subtotal){
+
+return subtotal >= FREE_DELIVERY_LIMIT
+? 0
+: NORMAL_DELIVERY_CHARGE;
+
+}
+
+
+/* =====================================================
    DISPLAY PRODUCTS
 ===================================================== */
 
@@ -1716,7 +1654,6 @@ Is category/search mein abhi koi product available nahi hai.
 `;
 
 return;
-
 }
 
 
@@ -1806,11 +1743,13 @@ category;
 
 }
 
+
 document
 .querySelectorAll(".filter-btn")
 .forEach(btn =>
 btn.classList.remove("active")
 );
+
 
 if(button){
 
@@ -1836,7 +1775,9 @@ btn.classList.add("active");
 
 }
 
+
 displayProducts(result);
+
 
 setTimeout(() => {
 
@@ -1905,21 +1846,41 @@ product.category
 )
 .toLowerCase();
 
-return words.every(
-word =>
-text.includes(word) ||
+
+return words.every(word =>
+
+text.includes(word)
+
+||
+
 word === "belt" &&
-product.category === "Belts" ||
+product.category === "Belts"
+
+||
+
 word === "belts" &&
-product.category === "Belts" ||
+product.category === "Belts"
+
+||
+
 word === "shoe" &&
-product.category === "Shoes" ||
+product.category === "Shoes"
+
+||
+
 word === "shoes" &&
-product.category === "Shoes" ||
+product.category === "Shoes"
+
+||
+
 word === "shirt" &&
-product.category === "Shirts" ||
+product.category === "Shirts"
+
+||
+
 word === "shirts" &&
 product.category === "Shirts"
+
 );
 
 });
@@ -2038,7 +1999,8 @@ total + item.qty,
 0
 );
 
-const total =
+
+const subtotal =
 cart.reduce(
 (total,item) =>
 total + item.price * item.qty,
@@ -2046,15 +2008,38 @@ total + item.price * item.qty,
 );
 
 
+const delivery =
+calculateDelivery(subtotal);
+
+
+const grandTotal =
+subtotal + delivery;
+
+
 document.getElementById(
 "cartCount"
 ).textContent =
 count;
 
+
+document.getElementById(
+"cartSubtotal"
+).textContent =
+money(subtotal);
+
+
+document.getElementById(
+"cartDelivery"
+).textContent =
+delivery === 0
+? "FREE"
+: money(delivery);
+
+
 document.getElementById(
 "cartTotal"
 ).textContent =
-money(total);
+money(grandTotal);
 
 
 const box =
@@ -2162,7 +2147,9 @@ product => product.id === id
 if(!item)
 return;
 
+
 item.qty += value;
+
 
 if(item.qty <= 0){
 
@@ -2172,6 +2159,7 @@ product => product.id !== id
 );
 
 }
+
 
 saveCart();
 
@@ -2243,12 +2231,13 @@ return;
 }
 
 
-const box =
+const productsBox =
 document.getElementById(
 "checkoutProducts"
 );
 
-box.innerHTML =
+
+productsBox.innerHTML =
 cart.map(item => `
 
 <div class="checkout-line">
@@ -2267,7 +2256,67 @@ ${money(item.price * item.qty)}
 `).join("");
 
 
+const subtotal =
+cart.reduce(
+(sum,item) =>
+sum + item.price * item.qty,
+0
+);
+
+
+const delivery =
+calculateDelivery(subtotal);
+
+
+const grandTotal =
+subtotal + delivery;
+
+
+document.getElementById(
+"checkoutSummary"
+).innerHTML = `
+
+<div class="price-row">
+
+<span>
+Subtotal
+</span>
+
+<strong>
+${money(subtotal)}
+</strong>
+
+</div>
+
+<div class="price-row">
+
+<span>
+Delivery
+</span>
+
+<strong class="${delivery === 0 ? "free-delivery" : ""}">
+${delivery === 0 ? "FREE" : money(delivery)}
+</strong>
+
+</div>
+
+<div class="price-row grand">
+
+<span>
+Grand Total
+</span>
+
+<strong>
+${money(grandTotal)}
+</strong>
+
+</div>
+
+`;
+
+
 closeCart();
+
 
 document
 .getElementById("checkoutModal")
@@ -2275,6 +2324,10 @@ document
 
 }
 
+
+/* =====================================================
+   CLOSE CHECKOUT
+===================================================== */
 
 function closeCheckout(){
 
@@ -2308,6 +2361,7 @@ document.getElementById(
 "placeOrderBtn"
 );
 
+
 button.disabled = true;
 
 button.textContent =
@@ -2321,25 +2375,30 @@ document.getElementById(
 "customerName"
 ).value.trim();
 
+
 const phone =
 document.getElementById(
 "customerPhone"
 ).value.trim();
+
 
 const address =
 document.getElementById(
 "customerAddress"
 ).value.trim();
 
+
 const city =
 document.getElementById(
 "customerCity"
 ).value.trim();
 
+
 const state =
 document.getElementById(
 "customerState"
 ).value.trim();
+
 
 const pincode =
 document.getElementById(
@@ -2365,12 +2424,20 @@ throw new Error(
 }
 
 
-const total =
+const subtotal =
 cart.reduce(
 (sum,item) =>
 sum + item.price * item.qty,
 0
 );
+
+
+const deliveryCharge =
+calculateDelivery(subtotal);
+
+
+const total =
+subtotal + deliveryCharge;
 
 
 const orderId =
@@ -2459,10 +2526,18 @@ ${city}, ${state} - ${pincode}
 
 Products:
 ${cart.map(item =>
-`• ${item.name} × ${item.qty}`
+`• ${item.name} × ${item.qty} — ${money(item.price * item.qty)}`
 ).join("\n")}
 
-Total: ${money(total)}
+Subtotal: ${money(subtotal)}
+
+Delivery: ${
+deliveryCharge === 0
+? "FREE"
+: money(deliveryCharge)
+}
+
+Grand Total: ${money(total)}
 
 Payment: *Cash on Delivery*
 
@@ -2493,6 +2568,7 @@ document.getElementById(
 "successOrderId"
 ).textContent =
 "Order ID: " + orderId;
+
 
 document
 .getElementById("successModal")
@@ -2576,11 +2652,13 @@ document.getElementById(
 .trim()
 .toUpperCase();
 
+
 const phone =
 document.getElementById(
 "trackingPhone"
 ).value
 .trim();
+
 
 const result =
 document.getElementById(
