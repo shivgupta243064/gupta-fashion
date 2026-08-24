@@ -1484,39 +1484,82 @@ p=>p.category===category
 /* =====================================================
 SEARCH
 ===================================================== */
-
 function searchProducts(){
 
-const value =
-document
-.getElementById(
-"searchInput"
-)
-.value
-.toLowerCase()
-.trim();
+    const value = document
+        .getElementById("searchInput")
+        .value
+        .toLowerCase()
+        .trim();
 
+    // Search box empty hai to saare products dikhao
+    if(value === ""){
+        displayProducts(products);
+        return;
+    }
 
-displayProducts(
+    // Product name ya category mein search karo
+    const results = products.filter(p => {
 
-products.filter(
+        const name = p.name
+            .toLowerCase();
 
-p=>
+        const category = p.category
+            .toLowerCase();
 
-p.name
-.toLowerCase()
-.includes(value)
+        return (
+            name.includes(value) ||
+            category.includes(value) ||
+            name.includes(value.replace(/s$/, "")) ||
+            category.includes(value.replace(/s$/, ""))
+        );
 
-||
+    });
 
-p.category
-.toLowerCase()
-.includes(value)
+    // Koi product nahi mila
+    if(results.length === 0){
 
-)
+        document.getElementById("products").innerHTML = `
 
-);
+            <div style="
+                width:100%;
+                text-align:center;
+                padding:60px 20px;
+                background:#fff;
+                border-radius:18px;
+                border:1px solid #eee;
+            ">
 
+                <div style="
+                    font-size:48px;
+                    margin-bottom:15px;
+                ">
+                    😕
+                </div>
+
+                <h2 style="
+                    margin:0 0 8px;
+                    color:#111827;
+                ">
+                    Product Not Available
+                </h2>
+
+                <p style="
+                    margin:0;
+                    color:#6b7280;
+                ">
+                    Is naam ka koi product abhi available nahi hai.
+                </p>
+
+            </div>
+
+        `;
+
+        return;
+    }
+
+    // Products mil gaye
+    displayProducts(results);
 }
 
 
